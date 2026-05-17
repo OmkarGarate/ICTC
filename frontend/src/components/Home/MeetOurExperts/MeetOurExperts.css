@@ -1,0 +1,340 @@
+.experts-section {
+  padding: 80px 40px 0px 40px;
+  font-family: "DM Sans", sans-serif;
+  background-color: rgba(250, 250, 250, 1);
+}
+
+/* HEADER */
+.experts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.experts-header h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+}
+
+/* NAV BUTTONS */
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-buttons button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(152, 148, 155, 1);
+  background: rgba(250, 250, 250, 1);
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* SLIDER */
+.experts-slider {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 40px;
+}
+
+.experts-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* CARD */
+.doctor-card-home {
+  min-width: 300px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  border: 1px solid rgba(189, 187, 191, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.doctor-card-home:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+
+}
+
+/* IMAGE */
+.doctor-img-wrapper {
+  position: relative;
+}
+
+.doctor-img-wrapper img {
+  width: 100%;
+
+  object-fit: contain;
+  border-radius: 14px;
+  padding: 10px;
+  transition: filter 0.3s ease;
+}
+
+.doctor-card-home:hover .doctor-img-wrapper img {
+  filter: brightness(0.9);
+}
+
+/* HOVER OVERLAY */
+.doctor-hover {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding-bottom: 12px;
+
+  opacity: 0;                 /* 🔥 hidden by default */
+  pointer-events: none;       /* prevents accidental clicks */
+  transition: opacity 0.3s ease;
+}
+
+
+.doctor-card-home:hover .doctor-hover {
+  opacity: 1;                 /* 🔥 visible on hover */
+  pointer-events: auto;
+}
+
+
+/* CTA BUTTON */
+.view-profile-btn {
+  background: rgba(63, 34, 74, 1);
+  border: 1px solid rgba(189, 187, 191, 1);
+  color: rgba(236, 223, 242, 1);
+ 
+  padding: 0px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-profile-btn span {
+  font-size: 18px;
+}
+.view-profile-btn {
+  transform: translateY(8px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.doctor-card-home:hover .view-profile-btn {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+/* CONTENT */
+.doctor-content {
+  padding: 0 16px 16px;
+}
+
+.doctor-content h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: rgba(63, 34, 74, 1);
+  text-align: center;
+}
+
+.doctor-content p {
+  font-size: 12px;
+  color: rgba(80, 77, 83, 1);
+  line-height: 1.5;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* TAG */
+.doctor-tag {
+  margin: auto 16px 16px;
+  background: rgba(236, 223, 242, 1);
+  border: 1px solid rgba(189, 187, 191, 1);
+  color: rgba(105, 60, 121, 1);
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+
+/* ================= RESPONSIVE MEET OUR EXPERTS ================= */
+
+/* Large Laptops & Small Desktops */
+@media (max-width: 1440px) {
+  
+
+  .experts-header h2 {
+    font-size: 36px;
+  }
+
+  .doctor-card-home {
+    min-width: 280px;
+  }
+}
+
+/* Tablets & Large Tablets */
+@media (max-width: 1199px) {
+  .experts-header {
+    margin-bottom: 32px;
+  }
+
+  .doctor-card-home {
+    min-width: 260px;
+  }
+
+  .doctor-content h3 {
+    font-size: 22px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1023px) {
+  .experts-section {
+    padding: 64px 24px;
+  }
+
+  .experts-header h2 {
+    font-size: 32px;
+  }
+
+  .nav-buttons button {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+  }
+
+  .doctor-card-home {
+    min-width: 240px;
+  }
+}
+
+/* Large Mobile / iPhone / Nothing */
+@media (max-width: 767px) {
+  .experts-section {
+    padding: 48px 20px;
+  }
+
+  .experts-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .experts-header h2 {
+    font-size: 28px;
+  }
+
+  /* Hide arrow buttons on mobile (touch swipe instead) */
+  .nav-buttons {
+    display: none;
+  }
+
+  .experts-slider {
+    gap: 16px;
+  }
+
+  .doctor-card-home {
+    min-width: 220px;
+  }
+
+  .doctor-content h3 {
+    font-size: 20px;
+  }
+
+  .doctor-content p {
+    font-size: 11px;
+  }
+
+  .doctor-tag {
+    font-size: 11px;
+    padding: 6px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .experts-section {
+    padding: 40px 16px;
+  }
+
+  .experts-header h2 {
+    font-size: 24px;
+  }
+
+  .doctor-card-home {
+    min-width: 200px;
+  }
+
+  .doctor-img-wrapper img {
+    padding: 8px;
+  }
+
+  .view-profile-btn {
+    font-size: 11px;
+  }
+
+  .view-profile-btn span {
+    font-size: 16px;
+  }
+}
+
+/* Very Small Devices */
+@media (max-width: 360px) {
+  .doctor-card-home {
+    min-width: 180px;
+  }
+
+  .doctor-content h3 {
+    font-size: 18px;
+  }
+}
+
+/* Large Desktop / Wide Screens */
+@media (min-width: 1680px) {
+  .experts-section {
+    padding: 96px 40px;
+  }
+
+  .experts-header h2 {
+    font-size: 44px;
+  }
+
+  .doctor-card-home {
+    min-width: 320px;
+  }
+
+  .doctor-content h3 {
+    font-size: 26px;
+  }
+
+  .doctor-content p {
+    font-size: 13px;
+  }
+
+  .doctor-tag {
+    font-size: 13px;
+  }
+}
+
+
+.doctor-qualification {
+  text-align: center;
+  line-height: 1.6;
+}

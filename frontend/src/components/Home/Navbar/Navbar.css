@@ -1,0 +1,336 @@
+/* ================= TOP BAR ================= */
+.top-bar {
+  background: rgba(48, 45, 49, 1);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 40px;
+  font-size: 16px;
+  font-family: "DM Sans", sans-serif;
+}
+
+.diffColor {
+  color: rgba(236, 223, 242, 1);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ================= NAVBAR ================= */
+.navbar-wrapper {
+  position: relative;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  background: #fff;
+  border-bottom: 2px solid rgba(183, 129, 205, 1);
+}
+
+.logo img {
+  height: 55px;
+}
+
+/* ================= MENU ================= */
+.menu {
+  display: flex;
+  gap: 28px;
+}
+
+.menu li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.menu li img {
+  width: 16px;
+}
+
+/* ================= BUTTON ================= */
+.appointment-btn {
+  background: rgba(120, 79, 138, 1);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+/* ================= MEGA DROPDOWN ================= */
+.mega-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(18, 16, 18, 1);
+  padding: 20px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  z-index: 999;
+}
+
+/* ================= GRID LAYOUT FIX ================= */
+.dropdown-grid {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0 20px;
+
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 50px;
+  align-items: start;
+}
+
+/* ================= LEFT SIDE ================= */
+.dropdown-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-heading {
+  color: rgba(176, 104, 205, 1);
+  font-size: 16px;
+  font-weight: 800;
+  font-family: "DM Sans", sans-serif;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+/* CONTENT BELOW HEADING */
+.dropdown-content {
+  display: flex;
+  gap: 60px;
+}
+
+/* Columns */
+.column p {
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+/* ================= QUICK LINKS ================= */
+.quick-links {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  width: 100%;
+}
+
+.quick-links h4 {
+  color: rgba(105, 60, 121, 1);
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: "DM Sans", sans-serif;
+}
+
+.helpline-box {
+  background: rgba(236, 223, 242, 1);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(18, 16, 18, 1);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "DM Sans", sans-serif;
+}
+
+.helpline-box strong {
+  font-size: 16px;
+  display: block;
+}
+
+/* Buttons */
+.quick-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-family: "DM Sans", sans-serif;
+  text-align: left;
+}
+
+.quick-btn.purple {
+  background: rgba(176, 104, 205, 1);
+  color: #fff;
+  border: 1px solid rgba(18, 16, 18, 1);
+}
+
+.quick-btn.dark {
+  background: rgba(18, 16, 18, 1);
+  color: #fff;
+  border: 1px solid rgba(18, 16, 18, 1);
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+
+/* ================= HAMBURGER ================= */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 26px;
+  height: 3px;
+  background: rgba(120, 79, 138, 1);
+  border-radius: 2px;
+}
+
+/* ================= MOBILE MENU ================= */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  padding: 20px;
+  border-bottom: 2px solid rgba(183, 129, 205, 1);
+  z-index: 998;
+}
+
+.mobile-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-menu li {
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mobile-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1250px) {
+  .menu {
+    display: none;
+  }
+
+  .appointment-btn {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobile-menu.open {
+    display: block;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    padding: 8px 16px;
+    text-align: center;
+  }
+
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .logo img {
+    height: 46px;
+  }
+}
+/* OVERLAY */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+/* STICKY */
+.navbar-wrapper.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* SLIDE ANIMATION */
+.slide-down {
+  animation: slideDown 0.35s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE MEGA DROPDOWN FIX */
+@media (max-width: 1023px) {
+  .dropdown-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .dropdown-content {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .quick-links {
+    order: 2;
+  }
+
+  .dropdown-left {
+    order: 1;
+  }
+
+  .mega-dropdown {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+}
+
+
+.helpline-box {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+
+
+.dropdown-section-title{
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(176, 104, 205, 1);
+  cursor: pointer;
+}

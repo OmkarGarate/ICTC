@@ -1,0 +1,109 @@
+.center-breadcrumb {
+  padding: 10px 30px;
+  font-family: "DM Sans", sans-serif;
+  background: rgba(250, 250, 250, 1);
+}
+
+/* CONTAINER */
+.center-breadcrumb__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+
+  border: 1px solid rgba(228, 227, 229, 1);
+  background: rgba(255, 255, 255, 1);
+  border-radius: 999px;
+  padding: 6px 20px;
+
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.02) inset;
+
+  max-width: 100%;
+  flex-wrap: wrap; /* 🔥 allows wrap on small screens */
+}
+
+/* HOME ICON */
+.center-breadcrumb__home {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* SEPARATOR */
+.center-breadcrumb__sep {
+  font-size: 24px;
+  color: rgba(80, 77, 83, 1);
+  line-height: 1;
+}
+
+/* TEXT */
+.center-breadcrumb__text {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(80, 77, 83, 1);
+  white-space: nowrap;
+}
+
+/* CURRENT */
+.center-breadcrumb__current {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 🔥 handles long centre names */
+}
+
+/* ========================= */
+/* RESPONSIVE BREAKPOINTS */
+/* ========================= */
+
+/* TABLETS */
+@media (max-width: 768px) {
+  .center-breadcrumb {
+    padding: 8px 16px;
+  }
+
+  .center-breadcrumb__content {
+    gap: 10px;
+    padding: 6px 16px;
+  }
+
+  .center-breadcrumb__sep {
+    font-size: 20px;
+  }
+}
+
+/* LARGE MOBILES */
+@media (max-width: 480px) {
+  .center-breadcrumb {
+    display: flex;
+    justify-content: center; /* 🔥 center breadcrumb */
+  }
+
+  .center-breadcrumb__content {
+    justify-content: center;
+    text-align: center;
+    row-gap: 6px;
+  }
+
+  .center-breadcrumb__text,
+  .center-breadcrumb__current {
+    font-size: 11px;
+  }
+
+  .center-breadcrumb__current {
+    max-width: 160px;
+  }
+}
+
+/* SMALL MOBILES */
+@media (max-width: 360px) {
+  .center-breadcrumb__current {
+    max-width: 120px;
+  }
+}
+
+
+

@@ -1,0 +1,170 @@
+/* ===================================================
+TABS WRAPPER
+=================================================== */
+
+.tabs-wrapper{
+position:relative;
+display:flex;
+align-items:center;
+margin:28px 0;
+padding:14px 18px;
+border-radius:22px;
+background:#f8fafc;
+border:1px solid #e5e7eb;
+overflow:hidden;
+min-height:76px;
+}
+
+/* ===================================================
+SCROLL AREA
+=================================================== */
+
+.cancer-tabs-admin{
+display:flex;
+align-items:center;
+gap:12px;
+overflow-x:auto;
+scroll-behavior:smooth;
+padding:4px 48px;
+flex:1;
+scrollbar-width:none;
+}
+
+.cancer-tabs-admin::-webkit-scrollbar{
+display:none;
+}
+
+/* ===================================================
+TAB BUTTON
+=================================================== */
+
+.cancer-tabs-admin button{
+padding:12px 22px;
+border-radius:999px;
+border:1.5px solid #d1d5db;
+background:white;
+cursor:pointer;
+font-weight:600;
+font-size:14px;
+white-space:nowrap;
+transition:all .25s ease;
+color:#374151;
+min-width:max-content;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* HOVER */
+
+.cancer-tabs-admin button:hover{
+background:#f5f3ff;
+border-color:#c4b5fd;
+color:#7c3aed;
+transform:translateY(-1px);
+}
+
+/* ACTIVE TAB */
+
+.cancer-tabs-admin button.active{
+background:linear-gradient(
+135deg,
+#8b5cf6,
+#7c3aed
+);
+border-color:#7c3aed;
+color:white;
+box-shadow:
+0 8px 20px rgba(124,58,237,0.25);
+}
+
+/* ===================================================
+ARROWS
+=================================================== */
+
+.tab-arrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:white;
+border:1px solid #d1d5db;
+width:42px;
+height:42px;
+border-radius:50%;
+cursor:pointer;
+font-size:22px;
+font-weight:700;
+z-index:20;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:all .2s ease;
+color:#374151;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* LEFT */
+
+.tab-arrow:first-of-type{
+left:14px;
+}
+
+/* RIGHT */
+
+.tab-arrow:last-of-type{
+right:14px;
+}
+
+/* HOVER */
+
+.tab-arrow:hover{
+background:#f5f3ff;
+border-color:#c4b5fd;
+color:#7c3aed;
+transform:translateY(-50%) scale(1.05);
+}
+
+/* ACTIVE */
+
+.tab-arrow:active{
+transform:translateY(-50%) scale(.95);
+}
+
+/* ===================================================
+RESPONSIVE
+=================================================== */
+
+@media(max-width:768px){
+
+.tabs-wrapper{
+padding:12px;
+border-radius:18px;
+min-height:68px;
+}
+
+.cancer-tabs-admin{
+padding:4px 42px;
+gap:10px;
+}
+
+.cancer-tabs-admin button{
+padding:10px 18px;
+font-size:13px;
+}
+
+.tab-arrow{
+width:36px;
+height:36px;
+font-size:18px;
+}
+
+.tab-arrow:first-of-type{
+left:8px;
+}
+
+.tab-arrow:last-of-type{
+right:8px;
+}
+
+}

@@ -1,0 +1,37 @@
+.all-services-page{
+      padding: 40px 40px 40px 60px;
+}
+
+
+@media (max-width: 1440px) {
+ 
+}
+
+/* ================= TABLETS (3 COLS) ================= */
+
+@media (max-width: 1199px) {
+  
+}
+
+/* ================= SMALL TABLETS ================= */
+
+@media (max-width: 1023px) {
+ 
+}
+
+/* ================= MOBILE (2 COLS – UX FIX) ================= */
+
+@media (max-width: 767px) {
+  .all-services-page {
+    padding: 48px 14px;
+  }
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px) {
+  .all-services-page {
+    padding: 32px 10px;
+  }
+}

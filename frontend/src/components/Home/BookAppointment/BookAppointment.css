@@ -1,0 +1,393 @@
+.appointment-wrapper {
+  padding: 80px 40px;
+  background: #ffffff;
+  font-family: "DM Sans", sans-serif;
+}
+
+.appointment-card {
+
+  margin: auto;
+  display: flex;
+  border-radius: 24px;
+background: linear-gradient(105.41deg, #ECDFF2 8.94%, #B068CD 89.7%);
+
+box-shadow: 0px 4px 16px 0px rgba(63, 34, 74, 0.15) inset;
+border: 1px solid rgba(228, 227, 229, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* LEFT */
+.appointment-form {
+
+  padding: 48px;
+
+  width: 70%;
+}
+
+.appointment-form h2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+  margin-bottom: 24px;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(105, 60, 121, 1);
+  margin: 20px 0 12px;
+}
+
+.input-row {
+  display: flex;
+  gap: 16px;
+}
+
+.appointment-form input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(189, 187, 191, 1);
+  background: rgba(255, 255, 255, 1);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(116, 111, 119, 1);
+  margin-bottom: 16px;
+  outline: none;
+}
+
+/* CENTRES */
+.centres-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.centre-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(253, 253, 253, 1);
+  border: 1px solid rgba(189, 187, 191, 1);
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(116, 111, 119, 1);
+  position: relative;
+}
+
+/* hide default checkbox */
+.centre-chip input {
+  display: none;
+}
+
+/* custom checkbox */
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(189, 187, 191, 1);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-checkbox img {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+}
+
+
+
+
+.centre-chip input:checked + .custom-checkbox img {
+  opacity: 1;
+}
+
+.centre-name {
+  white-space: nowrap;
+}
+
+
+
+/* BUTTON */
+.book-btn {
+  margin-top: 16px;
+  padding: 14px 28px;
+  background: rgba(176, 104, 205, 1);
+  border: none;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 1);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* RIGHT IMAGE — MATCHING FIGMA */
+.appointment-image {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  /* padding-right: 40px; */
+}
+
+.appointment-image img {
+  height: 95%;
+  object-fit: contain;
+}
+
+
+/* ERROR TEXT */
+.error {
+  display: block;
+  font-size: 12px;
+  color: #c0392b;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* DATE INPUT FIX */
+.date-input {
+  cursor: pointer;
+  width: 50% !important;
+}
+
+
+
+/* ================= RESPONSIVE BOOK APPOINTMENT ================= */
+
+/* Large Laptops & Small Desktops */
+@media (max-width: 1440px) {
+  .appointment-wrapper {
+    padding: 72px 32px;
+  }
+
+  .appointment-form {
+    padding: 40px;
+  }
+}
+
+/* Tablets & Large Tablets */
+@media (max-width: 1199px) {
+  .appointment-form {
+    width: 75%;
+    padding: 36px;
+  }
+
+  .appointment-image {
+    padding-right: 24px;
+  }
+
+  .appointment-image img {
+    height: 90%;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1023px) {
+  .appointment-wrapper {
+    padding: 64px 24px;
+  }
+
+  .appointment-card {
+    flex-direction: column;
+  }
+
+  .appointment-form {
+    width: 100%;
+    padding: 32px;
+  }
+
+  .appointment-image {
+
+    height: 250px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .appointment-image img {
+    height: 100%;
+  }
+}
+
+/* Large Mobile / iPhone / Nothing */
+@media (max-width: 767px) {
+  .appointment-wrapper {
+    padding: 48px 20px;
+  }
+
+  .appointment-form {
+    padding: 24px;
+  }
+
+  .appointment-form h2 {
+    font-size: 26px;
+  }
+
+  .input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .centres-grid {
+    gap: 10px;
+  }
+
+  .centre-chip {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .date-input {
+    width: 100% !important;
+  }
+
+  /* Hide image on mobile for clean UX */
+  .appointment-image {
+    display: none;
+  }
+
+  .book-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .appointment-wrapper {
+    padding: 40px 16px;
+  }
+
+  .appointment-form {
+    padding: 20px;
+  }
+
+  .appointment-form h2 {
+    font-size: 24px;
+  }
+
+  .appointment-form input {
+    font-size: 13px;
+    padding: 12px 14px;
+  }
+
+  .centre-chip {
+    font-size: 12px;
+  }
+
+  .book-btn {
+    font-size: 13px;
+    padding: 12px;
+  }
+}
+
+/* Very Small Devices */
+@media (max-width: 360px) {
+  .appointment-form h2 {
+    font-size: 22px;
+  }
+
+  .section-label {
+    font-size: 13px;
+  }
+}
+
+/* Large Desktop / Wide Screens */
+@media (min-width: 1680px) {
+  .appointment-wrapper {
+    padding: 96px 40px;
+  }
+
+  .appointment-form h2 {
+    font-size: 32px;
+  }
+
+  .appointment-form {
+    padding: 56px;
+  }
+}
+.book-btn.loading {
+  background: #9b7aa9;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.book-btn.success {
+  background: #2ecc71;
+  cursor: default;
+}
+
+/* Optional smooth effect */
+.book-btn {
+  transition: all 0.3s ease;
+}
+
+/* INFO NOTICE — MATCHING ICTC PURPLE THEME */
+.info-notice {
+  background: linear-gradient(
+    105deg,
+    rgba(236, 223, 242, 0.9),
+    rgba(255, 255, 255, 0.9)
+  );
+  border: 1px solid rgba(176, 104, 205, 0.35);
+  color: rgba(63, 34, 74, 1);
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* CENTRE LINK */
+.centre-link-BA {
+  color: rgba(176, 104, 205, 1);
+  font-weight: 700;
+  text-decoration: none;
+    text-decoration: underline;
+}
+
+
+
+/* DATE + BUTTON STACK FIX */
+.date-section {
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* Keep date picker size same */
+.date-input {
+  width: 50% !important;
+}
+
+/* Button should naturally come below */
+.book-btn {
+  align-self: flex-start;
+}
+
+/* Mobile: full width button */
+@media (max-width: 767px) {
+  .book-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+
+
+.nicheLe{
+  display: flex;
+  flex-direction: column;
+
+}

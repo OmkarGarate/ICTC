@@ -1,0 +1,83 @@
+.privacy-policy {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  color: #2d2d2d;
+  line-height: 1.7;
+  background-color: #ffffff;
+}
+
+/* Headings */
+.privacy-policy h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+
+.privacy-policy h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.privacy-policy h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+/* Text */
+.privacy-policy p {
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #444;
+}
+
+/* Lists */
+.privacy-policy ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.privacy-policy li {
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+/* Links */
+.privacy-policy a {
+  color: #0b5ed7;
+  text-decoration: none;
+}
+
+.privacy-policy a:hover {
+  text-decoration: underline;
+}
+
+/* Divider */
+.privacy-policy hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .privacy-policy {
+    padding: 25px 15px;
+  }
+
+  .privacy-policy h1 {
+    font-size: 26px;
+  }
+
+  .privacy-policy h2 {
+    font-size: 20px;
+  }
+}

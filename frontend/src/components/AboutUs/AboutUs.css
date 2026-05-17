@@ -1,0 +1,305 @@
+.ictc-about {
+  padding: 40px;
+  font-family: "DM Sans", sans-serif;
+  background: rgba(250, 250, 250, 1);
+}
+
+/* =======================
+   STATS GRID
+======================= */
+.ictc-about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  /* margin-bottom: 64px; */
+}
+
+/* =======================
+   STAT CARD
+======================= */
+.ictc-stat-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 18px;
+  background: linear-gradient(
+    105.96deg,
+    rgba(214, 214, 214, 0.2) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  background-clip: padding-box;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  z-index: 1;
+}
+
+/* =======================
+   GRADIENT BORDER (NORMAL)
+======================= */
+.ictc-stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(
+    105.96deg,
+    #888888 0%,
+    #3C3C3E 100%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  pointer-events: none;
+  transition: background 0.35s ease;
+}
+
+/* =======================
+   HOVER STATE
+======================= */
+.ictc-stat-card:hover {
+  background: linear-gradient(
+    105.96deg,
+    rgba(239, 200, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  box-shadow: 0px 2.79px 11.17px rgba(0, 0, 0, 0.1);
+}
+
+/* GRADIENT BORDER (HOVER) */
+.ictc-stat-card:hover::before {
+  background: linear-gradient(
+    111.2deg,
+    #B068CD -0.78%,
+    #3F224A 101.68%
+  );
+}
+
+/* =======================
+   TOP ROW
+======================= */
+.ictc-stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =======================
+   VALUE (GRADIENT TEXT)
+======================= */
+.ictc-stat-value {
+  font-size: 40px;
+  font-weight: 900;
+  background: linear-gradient(
+    266.06deg,
+    #ECDFF2 -59.63%,
+    #B068CD 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =======================
+   ARROW ICON (SINGLE IMAGE – ROTATE ONLY)
+======================= */
+.ictc-arrow {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.ictc-arrow img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: transform 0.35s ease;
+  transform-origin: center;
+}
+
+/* Rotate arrow on hover */
+.ictc-stat-card:hover .ictc-arrow img {
+  transform: rotate(-45deg);
+}
+
+/* =======================
+   TITLE
+======================= */
+.ictc-stat-card h4 {
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(18, 16, 18, 1);
+}
+
+/* =======================
+   DESCRIPTION
+======================= */
+.ictc-stat-card p {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 200;
+  color: rgba(48, 45, 49, 1);
+}
+
+/* =======================
+   ABOUT TITLE
+======================= */
+.ictc-about-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+  margin-bottom: 24px;
+}
+
+/* =======================
+   ABOUT CONTENT
+======================= */
+.ictc-about-content p {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(18, 16, 18, 1);
+  margin-bottom: 20px;
+}
+
+.ictc-about-content span {
+  color: rgba(105, 60, 121, 1);
+  font-weight: 600;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+/* ---------- LARGE LAPTOPS ---------- */
+@media (max-width: 1200px) {
+  .ictc-stat-value {
+    font-size: 36px;
+  }
+
+  .ictc-stat-card h4 {
+    font-size: 18px;
+  }
+
+  .ictc-stat-card p {
+    font-size: 15px;
+  }
+}
+
+/* ---------- TABLETS ---------- */
+@media (max-width: 1024px) {
+  .ictc-about {
+    padding: 64px 32px;
+  }
+
+  .ictc-about-title {
+    font-size: 36px;
+  }
+
+  .ictc-about-content p {
+    font-size: 18px;
+  }
+
+  .ictc-about-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .ictc-stat-value {
+    font-size: 34px;
+  }
+}
+
+/* ---------- SMALL TABLETS ---------- */
+@media (max-width: 768px) {
+  .ictc-about {
+    padding: 48px 24px;
+  }
+
+  .ictc-about-title {
+    font-size: 32px;
+  }
+
+  .ictc-about-content p {
+    font-size: 16px;
+  }
+
+  .ictc-stat-card {
+    padding: 16px;
+  }
+
+  .ictc-stat-value {
+    font-size: 30px;
+  }
+
+  .ictc-stat-card h4 {
+    font-size: 17px;
+  }
+
+  .ictc-stat-card p {
+    font-size: 14px;
+  }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 640px) {
+  .ictc-about {
+    padding: 40px 16px;
+  }
+
+  .ictc-about-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .ictc-about-content p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .ictc-about-stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .ictc-stat-top {
+    align-items: flex-start;
+  }
+
+  .ictc-stat-value {
+    font-size: 28px;
+  }
+
+  .ictc-arrow {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ictc-arrow img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ---------- VERY SMALL DEVICES ---------- */
+@media (max-width: 360px) {
+  .ictc-about-title {
+    font-size: 24px;
+  }
+
+  .ictc-about-content p {
+    font-size: 14px;
+  }
+
+  .ictc-stat-value {
+    font-size: 26px;
+  }
+
+  .ictc-stat-card h4 {
+    font-size: 16px;
+  }
+}

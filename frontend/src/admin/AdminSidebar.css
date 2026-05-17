@@ -1,0 +1,116 @@
+/* ===========================
+   SIDEBAR BASE
+=========================== */
+
+.admin-sidebar {
+  width: 280px;
+  height: 100vh;
+  background: #2d2a2e;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+}
+
+/* COLLAPSED */
+.admin-sidebar.collapsed {
+  width: 90px;
+  align-items: center;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 25px;
+  color: #cbd5e1;
+}
+
+.admin-sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+.sidebar-header img {
+  width: 22px;
+}
+
+/* ===========================
+   MENU
+=========================== */
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ===========================
+   ITEM
+=========================== */
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+  color: #e5e7eb;
+}
+
+/* ICON */
+.sidebar-item img {
+  width: 22px;
+}
+
+/* HOVER */
+.sidebar-item:hover {
+  background: #3b373f;
+}
+
+/* ACTIVE */
+.sidebar-item.active {
+  background: #ffffff;
+  color: #2d2a2e;
+  border: 2px solid #a855f7;
+}
+
+/* ===========================
+   COLLAPSED MODE
+=========================== */
+
+.admin-sidebar.collapsed .sidebar-item {
+  justify-content: center;
+  padding: 14px;
+}
+
+.admin-sidebar.collapsed .sidebar-item span {
+  display: none;
+}
+
+/* ===========================
+   MOBILE (ALWAYS COLLAPSED)
+=========================== */
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 80px;
+    align-items: center;
+  }
+
+  .sidebar-item span {
+    display: none;
+  }
+
+  .sidebar-header span {
+    display: none;
+  }
+}

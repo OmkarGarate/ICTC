@@ -1,0 +1,31 @@
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-main {
+  flex: 1;
+  /* margin-left: 260px; */
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-content {
+  padding: 30px;
+}
+
+.admin-main {
+  flex: 1;
+  /* margin-left: 260px; */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-content {
+  padding: 30px;
+  flex: 1;
+  overflow-y: auto;
+}

@@ -1,0 +1,236 @@
+.our-center-hero {
+  font-family: "DM Sans", sans-serif;
+}
+
+/* ================= HERO IMAGE ================= */
+.hero-banner {
+  height: 180px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= INFO SECTION ================= */
+.center-info {
+  padding: 60px 40px 80px;
+  text-align: center;
+  background: rgba(250, 250, 250, 1);
+}
+
+.center-info h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+  margin-bottom: 20px;
+}
+
+/* ================= RATING ================= */
+.rating-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stars {
+  display: flex;
+  gap: 6px;
+}
+
+.stars img {
+  width: 28px;
+}
+
+.stars .dim {
+  opacity: 0.5;
+}
+
+.rating-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(18, 16, 18, 1);
+}
+
+.divider {
+  margin: 0 8px;
+}
+
+/* ================= PHONE ================= */
+.contact-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.contact-row img {
+  width: 28px;
+}
+
+.phone {
+  font-size: 30px;
+  font-weight: 600;
+  color: rgba(105, 60, 121, 1);
+}
+
+/* ================= ADDRESS ================= */
+.address-block {
+  max-width: 760px;
+  margin: 0 auto 16px;
+  text-align: center;
+}
+
+.address-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.address-title img {
+  width: 28px;
+}
+
+.addTitle {
+  font-weight: 600;
+  font-size: 24px;
+  color: rgba(18, 16, 18, 1);
+}
+
+.address-text {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(18, 16, 18, 1);
+  line-height: 1.6;
+  padding: 0 10px;
+}
+
+/* ================= TIMING ================= */
+.timing {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(18, 16, 18, 1);
+  margin-top: 12px;
+}
+
+/* ================================================= */
+/* ================= RESPONSIVE ==================== */
+/* ================================================= */
+
+/* LARGE TABLETS */
+@media (max-width: 1024px) {
+  .center-info {
+    padding: 48px 32px 64px;
+  }
+
+  .center-info h2 {
+    font-size: 34px;
+  }
+
+  .rating-text {
+    font-size: 20px;
+  }
+
+  .phone {
+    font-size: 26px;
+  }
+
+  .address-text {
+    font-size: 18px;
+  }
+
+  .timing {
+    font-size: 18px;
+  }
+}
+
+/* TABLETS */
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 150px;
+  }
+
+  .center-info {
+    padding: 40px 24px 56px;
+  }
+
+  .center-info h2 {
+    font-size: 30px;
+  }
+
+  .stars img {
+    width: 24px;
+  }
+
+  .rating-text {
+    font-size: 18px;
+  }
+
+  .contact-row img {
+    width: 24px;
+  }
+
+  .phone {
+    font-size: 22px;
+  }
+
+  .addTitle {
+    font-size: 20px;
+  }
+
+  .address-text {
+    font-size: 16px;
+  }
+
+  .timing {
+    font-size: 16px;
+  }
+}
+
+/* LARGE MOBILES */
+@media (max-width: 480px) {
+  .hero-banner {
+    height: 120px;
+  }
+
+  .center-info {
+    padding: 32px 16px 48px;
+  }
+
+  .center-info h2 {
+    font-size: 24px;
+  }
+
+  .rating-row {
+    gap: 10px;
+  }
+
+  .rating-text {
+    font-size: 16px;
+  }
+
+  .phone {
+    font-size: 18px;
+  }
+
+  .addTitle {
+    font-size: 18px;
+  }
+
+  .address-text {
+    font-size: 15px;
+  }
+
+  .timing {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,171 @@
+.pt-section {
+  padding: 100px 40px;
+  background: #fafafa;
+  font-family: "DM Sans", sans-serif;
+}
+
+/* HEADER */
+.pt-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 64px;
+}
+
+.pt-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #f1e9f6;
+  color: #9558ac;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.pt-header h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.pt-header h2 span {
+  color: #9558ac;
+}
+
+.pt-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* CAROUSEL */
+.pt-carousel {
+  overflow: hidden;
+}
+
+.pt-track {
+  display: flex;
+  gap: 32px;
+  transition: transform 0.6s ease;
+}
+
+.pt-slide {
+  flex: 0 0 33.333%;
+}
+
+.pt-card {
+  background: #fff;
+  border-radius: 28px;
+  padding: 36px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+/* QUOTE */
+.pt-quote {
+  width: 28px;
+  margin-bottom: 20px;
+}
+
+/* TEXT */
+.pt-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
+/* FOOTER */
+.pt-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.pt-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pt-location {
+  font-size: 14px;
+  color: #777;
+}
+
+.pt-google {
+  width: 36px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .pt-slide {
+    flex: 0 0 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .pt-slide {
+    flex: 0 0 90%;
+  }
+
+  .pt-header h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pt-section {
+    padding: 64px 16px;
+  }
+
+  .pt-card {
+    padding: 24px;
+  }
+  .pt-carousel {
+  overflow: hidden;
+}
+.pt-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.6s ease;
+}
+}
+
+/* ========================= */
+/* NAVIGATION DOTS */
+/* ========================= */
+
+.pt-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.pt-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d9cde2;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pt-dot.active {
+  width: 28px;
+  border-radius: 999px;
+  background: #9558ac;
+}
+
+.pt-dot:hover {
+  background: #b58ac9;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .pt-dots {
+    margin-top: 32px;
+  }
+}

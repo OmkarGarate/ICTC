@@ -1,0 +1,322 @@
+.callback-wrapper {
+  display: flex;
+  gap: 32px;
+  padding: 80px 40px;
+  font-family: "DM Sans", sans-serif;
+  background: rgba(255, 255, 255, 1);
+}
+
+/* LEFT MAIN CARD */
+.callback-card {
+  flex: 2;
+  display: flex;
+background: linear-gradient(303.97deg, #B068CD -81.23%, #FFFFFF 60.82%);
+border: 1px solid var(--primary-500, rgba(105, 60, 121, 1));
+  border-radius: 24px;
+  overflow: hidden;
+box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+
+/* FORM */
+.callback-form {
+
+  padding: 30px;
+}
+
+.callback-form h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color:rgba(63, 34, 74, 1);
+  margin-bottom: 32px;
+}
+
+.callback-form input {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--grey-200, rgba(189, 187, 191, 1));
+  font-size: 14px;
+  background: rgba(250, 250, 250, 1);
+  color: var(--grey-400, rgba(116, 111, 119, 1));
+
+  font-weight: 600;
+
+}
+
+.callback-form button {
+  margin-top: 20px;
+  padding: 14px 32px;
+  background: rgba(176, 104, 205, 1);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ERROR */
+.error-text {
+  color: #7a1f1f;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+/* DOCTOR IMAGE – FIXED ALIGNMENT */
+.callback-image {
+  width: 420px;                 /* slightly wider like design */
+  display: flex;
+  align-items: center;          /* vertical center */
+  justify-content: flex-end;    /* push to right edge */
+  padding: 0;                   /* remove inner gap */
+  position: relative;
+
+}
+
+.callback-image img {
+  height: 100%;
+  max-height: 395px;            /* controls image size */
+  object-fit: cover;
+         /* subtle overlap like Figma */
+}
+
+
+/* RIGHT SUPPORT CARD */
+.support-card {
+  flex: 1;
+background: var(--grey-600, rgba(48, 45, 49, 1));
+border: 1px solid var(--primary-500, rgba(105, 60, 121, 1));
+box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.1);
+
+  border-radius: 24px;
+  padding: 48px;
+    text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.support-card h3 {
+  font-size: 40px;
+  color: rgba(236, 223, 242, 1);
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.support-label {
+  font-size: 24px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: rgba(189, 187, 191, 1);
+}
+
+.support-phone {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  justify-content: center;
+}
+
+.support-phone img {
+  width: 40px;
+  border: 1px solid rgba(189, 187, 191, 1);
+  height: 40px;
+  border-radius: 45px;
+    padding: 8px;
+}
+
+
+
+/* ================= RESPONSIVE REQUEST CALLBACK ================= */
+
+/* Large Laptops & Small Desktops */
+@media (max-width: 1440px) {
+  .callback-wrapper {
+    padding: 72px 32px;
+  }
+
+  .callback-form h2 {
+    font-size: 36px;
+  }
+
+  .support-card h3 {
+    font-size: 36px;
+  }
+}
+
+/* Tablets & Large Tablets */
+@media (max-width: 1199px) {
+  .callback-wrapper {
+    gap: 24px;
+  }
+
+  .callback-image {
+    width: 360px;
+  }
+
+  .support-card {
+    padding: 40px;
+  }
+
+  .support-phone {
+    font-size: 32px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1023px) {
+  .callback-wrapper {
+    flex-direction: column;
+  }
+
+  .callback-card {
+    flex-direction: column;
+  }
+
+  .callback-image {
+    width: 90%;
+  position: absolute;
+    padding: 16px 0;
+    align-items: flex-end;
+  }
+
+  .callback-image img {
+    display: none;
+  }
+
+  .support-card {
+    padding: 36px;
+  }
+}
+
+/* Large Mobile / iPhone / Nothing */
+@media (max-width: 767px) {
+  .callback-wrapper {
+    padding: 48px 20px;
+  }
+
+  .callback-form h2 {
+    font-size: 28px;
+  }
+
+  .callback-form {
+    padding: 24px;
+  }
+
+  /* Hide image on mobile */
+  .callback-image {
+    display: none;
+  }
+
+  .callback-card {
+    flex-direction: column;
+  }
+
+  .callback-form button {
+    width: 100%;
+  }
+
+  .support-card {
+    margin-top: 24px;
+    padding: 32px 24px;
+  }
+
+  .support-card h3 {
+    font-size: 28px;
+  }
+
+  .support-label {
+    font-size: 18px;
+  }
+
+  .support-phone {
+    font-size: 24px;
+    justify-content: center;
+  }
+
+  .support-phone img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .callback-wrapper {
+    padding: 40px 16px;
+  }
+
+  .callback-form h2 {
+    font-size: 24px;
+  }
+
+  .callback-form input {
+    font-size: 13px;
+    padding: 14px;
+  }
+
+  .callback-form button {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .support-card h3 {
+    font-size: 24px;
+  }
+
+  .support-label {
+    font-size: 16px;
+  }
+
+  .support-phone {
+    font-size: 20px;
+  }
+}
+
+/* Very Small Devices */
+@media (max-width: 360px) {
+  .callback-form h2 {
+    font-size: 22px;
+  }
+
+  .support-card h3 {
+    font-size: 22px;
+  }
+}
+
+/* Large Desktop / Wide Screens */
+@media (min-width: 1680px) {
+  .callback-wrapper {
+    padding: 96px 40px;
+  }
+
+  .callback-form h2 {
+    font-size: 44px;
+  }
+
+  .support-card h3 {
+    font-size: 44px;
+  }
+}
+
+
+.callback-btn.loading {
+  background: #9b7aa9;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.callback-btn.success {
+  background: #2ecc71;
+}
+
+.callback-form button {
+  transition: all 0.3s ease;
+}

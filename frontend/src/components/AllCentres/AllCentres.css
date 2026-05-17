@@ -1,0 +1,260 @@
+.ictc-centres-page {
+  padding: 40px;
+  font-family: "DM Sans", sans-serif;
+  background: rgba(250, 250, 250, 1);
+}
+
+
+
+.ictc-centres-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+  margin-bottom: 32px;
+}
+
+/* LIST */
+.ictc-centres-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* CARD */
+.ictc-centre-card {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 24px;
+ border: 1px solid var(--grey-200, rgba(189, 187, 191, 1));
+ box-shadow: 0px 22px 30px 10px rgba(0, 0, 0, 0.05);
+   padding: 10px;
+  overflow: hidden;
+  gap: 20px;
+}
+
+/* MAP */
+.ictc-centre-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 210px;
+  border: none;
+  border-radius: 16px;
+
+}
+
+.ictc-centre-info{
+    padding: 10px;
+}
+
+.ictc-centre-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ictc-centre-header h3 {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(63, 34, 74, 1);
+}
+
+
+
+/* RATING */
+.ictc-centre-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 14px 0 18px;
+}
+
+.ictc-centre-rating img {
+  width: 28px;
+}
+
+.rating-score, .rating-count {
+  font-size: 24px;
+  font-weight: 600;
+  margin-left: 6px;
+  color: rgba(18, 16, 18, 1);
+}
+
+.rating-sep {
+  margin: 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+
+/* ADDRESS */
+.ictc-centre-address {
+  font-size: 20px;
+  line-height: 1.5;
+  color: rgba(18, 16, 18, 1);
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+/* FOOTER */
+.ictc-centre-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ictc-centre-phone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 30px;
+  font-weight: 600;
+  color: rgba(105, 60, 121, 1);
+}
+
+.ictc-centre-phone img {
+  width: 28px;
+}
+
+.ictc-centre-time {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(18, 16, 18, 1);
+}
+
+
+
+/* ================================= */
+/* ALL CENTRES – RESPONSIVE ONLY */
+/* ================================= */
+
+/* ---------- LARGE LAPTOPS ---------- */
+@media (max-width: 1200px) {
+  .ictc-centre-card {
+    grid-template-columns: 240px 1fr;
+  }
+
+  .ictc-centre-header h3 {
+    font-size: 32px;
+  }
+}
+
+/* ---------- TABLETS ---------- */
+@media (max-width: 1024px) {
+  .ictc-centres-page {
+    padding: 32px;
+  }
+
+  .ictc-centre-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ictc-centre-map iframe {
+    min-height: 260px;
+  }
+
+  .ictc-centre-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .ictc-centre-header h3 {
+    font-size: 28px;
+  }
+}
+
+/* ---------- SMALL TABLETS ---------- */
+@media (max-width: 768px) {
+  .ictc-centres-page {
+    padding: 24px;
+  }
+
+  .ictc-centres-title {
+    font-size: 32px;
+  }
+
+  .ictc-centre-rating img {
+    width: 22px;
+  }
+
+  .rating-score,
+  .rating-count {
+    font-size: 18px;
+  }
+
+  .ictc-centre-address {
+    font-size: 16px;
+  }
+
+  .ictc-centre-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ictc-centre-phone {
+    font-size: 22px;
+  }
+
+  .ictc-centre-time {
+    font-size: 16px;
+  }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 480px) {
+  .ictc-centres-page {
+    padding: 16px;
+  }
+
+  .ictc-centres-title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .ictc-centre-card {
+    padding: 8px;
+  }
+
+  .ictc-centre-map iframe {
+    min-height: 220px;
+  }
+
+  .ictc-centre-header h3 {
+    font-size: 22px;
+  }
+
+  .ictc-centre-rating {
+    flex-wrap: wrap;
+  }
+
+  .ictc-centre-phone {
+    font-size: 18px;
+  }
+
+  .ictc-centre-phone img {
+    width: 22px;
+  }
+
+  .ictc-centre-time {
+    font-size: 14px;
+  }
+}
+
+/* ---------- VERY SMALL DEVICES ---------- */
+@media (max-width: 360px) {
+  .ictc-centre-header h3 {
+    font-size: 20px;
+  }
+
+  .ictc-centre-address {
+    font-size: 14px;
+  }
+
+  .ictc-centre-phone {
+    font-size: 16px;
+  }
+}

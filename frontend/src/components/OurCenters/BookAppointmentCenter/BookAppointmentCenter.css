@@ -1,0 +1,145 @@
+.ictc-book-wrapper {
+  background: rgba(105, 60, 121, 1);
+  border-radius: 24px;
+  padding: 60px;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0px 4px 16px rgba(63, 34, 74, 0.15) inset;
+  border: 1px solid rgba(228, 227, 229, 1);
+  margin: 3rem 6rem;
+}
+
+/* HEADING */
+.ictc-book-heading {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgba(236, 223, 242, 1);
+  margin-bottom: 40px;
+}
+
+/* SECTION TITLE */
+.ictc-book-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(209, 176, 224, 1);
+  margin: 24px 0 12px;
+}
+
+/* ROW */
+.ictc-book-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* INPUTS */
+.ictc-book-input {
+  padding: 18px 20px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  width: 100%;
+  color: rgba(116, 111, 119, 1);
+  outline: none;
+  border: 1px solid rgba(189, 187, 191, 1);
+  background: #ffffff;
+}
+
+.ictc-book-full {
+  width: 60%;
+  margin-bottom: 28px;
+}
+
+/* BUTTON */
+.ictc-book-btn-row {
+  margin-top: 10px;
+}
+
+.ictc-book-btn {
+  background: rgba(176, 104, 205, 1);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+  padding: 16px 36px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.ictc-book-btn:hover {
+  opacity: 0.9;
+}
+
+/* ========================= */
+/* RESPONSIVE BREAKPOINTS */
+/* ========================= */
+
+/* LARGE TABLETS */
+@media (max-width: 1024px) {
+  .ictc-book-wrapper {
+    margin: 2.5rem 2rem;
+    padding: 48px;
+  }
+
+  .ictc-book-full {
+    width: 80%;
+  }
+}
+
+/* TABLETS */
+@media (max-width: 768px) {
+  .ictc-book-wrapper {
+    margin: 2rem 1.2rem;
+    padding: 40px 24px;
+  }
+
+  .ictc-book-heading {
+    font-size: 26px;
+    margin-bottom: 32px;
+  }
+
+  .ictc-book-row {
+    flex-direction: column;
+  }
+
+  .ictc-book-full {
+    width: 100%;
+  }
+
+  .ictc-book-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* LARGE MOBILES */
+@media (max-width: 480px) {
+  .ictc-book-wrapper {
+    margin: 1.5rem 1rem;
+    padding: 32px 20px;
+  }
+
+  .ictc-book-heading {
+    font-size: 22px;
+  }
+
+  .ictc-book-input {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+
+  .ictc-book-btn {
+    padding: 14px;
+    font-size: 13px;
+  }
+}
+
+/* SMALL MOBILES */
+@media (max-width: 360px) {
+  .ictc-book-heading {
+    font-size: 20px;
+  }
+
+  .ictc-book-section-title {
+    font-size: 13px;
+  }
+}

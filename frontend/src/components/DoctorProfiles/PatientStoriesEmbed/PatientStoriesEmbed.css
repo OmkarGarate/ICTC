@@ -1,0 +1,174 @@
+.ps-wrapper {
+  padding: 80px 40px;
+  background: #ffffff;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+}
+
+/* ================= HEADER ================= */
+.ps-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.ps-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: rgba(105, 60, 121, 1);
+}
+
+/* ================= NAV ================= */
+.ps-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.ps-nav button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(105, 60, 121, 0.1);
+  color: rgba(105, 60, 121, 1);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+}
+
+.ps-nav button:hover {
+  background: rgba(105, 60, 121, 0.18);
+  transform: scale(1.08);
+}
+
+/* ================= SLIDER ================= */
+.ps-slider {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.ps-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.ps-slide {
+  flex-shrink: 0;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* ================= CARD ================= */
+.ps-embed-card {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 480px;
+
+}
+
+/* ================= INSTAGRAM FIX ================= */
+.instagram-media {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: unset !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+/* ================= DOTS ================= */
+.ps-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.ps-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(105, 60, 121, 0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ps-dots button.active {
+  width: 22px;
+  border-radius: 20px;
+  background: rgba(105, 60, 121, 1);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1200px) {
+  .ps-wrapper {
+    padding: 64px 32px;
+  }
+
+  .ps-title {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 992px) {
+  .ps-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .ps-title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ps-wrapper {
+    padding: 48px 24px;
+  }
+
+  .ps-title {
+    font-size: 26px;
+  }
+
+  .ps-slide {
+    padding: 0 8px;
+  }
+
+  .ps-embed-card {
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ps-wrapper {
+    padding: 40px 16px;
+  }
+
+  .ps-header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .ps-title {
+    font-size: 22px;
+  }
+
+  .ps-slide {
+    padding: 0 6px;
+  }
+
+  .ps-embed-card {
+    border-radius: 16px;
+    min-height: 540px;
+  }
+
+  .instagram-media {
+    border-radius: 16px !important;
+  }
+}
