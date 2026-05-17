@@ -3,6 +3,8 @@ import {
   fetchBlogsApi,
   fetchBlogByIdApi,
   fetchBlogBySlugApi,
+  fetchSimilarBlogsApi,
+  fetchBlogCategoriesApi,
   createBlogApi,
   updateBlogApi,
   deleteBlogApi,
@@ -42,6 +44,30 @@ export const fetchBlogBySlug = createAsyncThunk(
       return res.data.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Blog not found');
+    }
+  },
+);
+
+export const fetchSimilarBlogs = createAsyncThunk(
+  'blogs/fetchSimilar',
+  async ({ id, limit = 3 }, { rejectWithValue }) => {
+    try {
+      const res = await fetchSimilarBlogsApi(id, limit);
+      return res.data.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Failed to fetch similar blogs');
+    }
+  },
+);
+
+export const fetchBlogCategories = createAsyncThunk(
+  'blogs/fetchCategories',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetchBlogCategoriesApi();
+      return res.data.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Failed to fetch categories');
     }
   },
 );
@@ -96,11 +122,17 @@ export const restoreBlog = createAsyncThunk(
 
 const blogsSlice = createSlice({
   name: 'blogs',
-  initialState: BLOGS_INITIAL_STATE,
+  initialState: {
+    ...BLOGS_INITIAL_STATE,
+    similar: [],       // similar blogs for BlogPost sidebar
+    categories: [],    // distinct category strings for BlogsSection sidebar
+    categoriesLoading: false,
+  },
 
   reducers: {
     clearSelectedBlog(state)  { state.selected = null; },
     clearBlogsError(state)    { state.error = null; },
+    clearSimilarBlogs(state)  { state.similar = []; },
   },
 
   extraReducers: (builder) => {
@@ -131,6 +163,26 @@ const blogsSlice = createSlice({
       })
       .addCase(fetchBlogBySlug.rejected, rejected);
 
+    // Similar blogs
+    builder
+      .addCase(fetchSimilarBlogs.pending, (state) => { state.similar = []; })
+      .addCase(fetchSimilarBlogs.fulfilled, (state, action) => {
+        state.similar = action.payload || [];
+      })
+      .addCase(fetchSimilarBlogs.rejected, (state) => { state.similar = []; });
+
+    // Categories
+    builder
+      .addCase(fetchBlogCategories.pending, (state) => { state.categoriesLoading = true; })
+      .addCase(fetchBlogCategories.fulfilled, (state, action) => {
+        state.categoriesLoading = false;
+        state.categories = action.payload || [];
+      })
+      .addCase(fetchBlogCategories.rejected, (state) => {
+        state.categoriesLoading = false;
+        state.categories = [];
+      });
+
     builder
       .addCase(createBlog.pending, pending)
       .addCase(createBlog.fulfilled, (state, action) => {
@@ -145,12 +197,7 @@ const blogsSlice = createSlice({
         state.loading = false;
         const updated = action.payload;
         if (!updated) return;
-        const idx = state.list.findIndex((b) => b.id === updated.id);
-        if (idx !== -1) {
-          state.list = state.list.map((b) =>
-            b.id === updated.id ? updated : b
-          );
-        }
+        state.list = state.list.map((b) => b.id === updated.id ? updated : b);
         if (state.selected?.id === updated.id) state.selected = updated;
       })
       .addCase(updateBlog.rejected, rejected);
@@ -169,16 +216,11 @@ const blogsSlice = createSlice({
         state.loading = false;
         const restored = action.payload;
         if (!restored) return;
-        const idx = state.list.findIndex((b) => b.id === restored.id);
-        if (idx !== -1) {
-          state.list = state.list.map((b) =>
-            b.id === restored.id ? restored : b
-          );
-        }
+        state.list = state.list.map((b) => b.id === restored.id ? restored : b);
       })
       .addCase(restoreBlog.rejected, rejected);
   },
 });
 
-export const { clearSelectedBlog, clearBlogsError } = blogsSlice.actions;
+export const { clearSelectedBlog, clearBlogsError, clearSimilarBlogs } = blogsSlice.actions;
 export default blogsSlice.reducer;

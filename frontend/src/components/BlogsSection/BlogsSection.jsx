@@ -2,19 +2,9 @@ import "./BlogsSection.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogs } from "../../redux/blogs/blogsSlice";
+import { fetchBlogs, fetchBlogCategories } from "../../redux/blogs/blogsSlice";
+import { encryptId } from "../Common/Idcrypto";
 import imgSrc from "../Common/ImgSrc";
-
-const categories = [
-  "Cancer Treatment",
-  "Cancer Prevention & Detection",
-  "Cancer Awareness",
-  "Cost of Care",
-  "Diet & Nutrition",
-  "Cancer Types",
-  "ICTC Cares",
-  "Childhood Cancer",
-];
 
 const POSTS_PER_PAGE = 6;
 
@@ -22,23 +12,36 @@ const BlogsSection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { list = [], loading } = useSelector((state) => state.blogs || {});
+  const {
+    list = [],
+    loading,
+    categories = [],
+    categoriesLoading,
+  } = useSelector((state) => state.blogs || {});
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchBlogs());
+    dispatch(fetchBlogCategories());
   }, [dispatch]);
 
-  const blogs = useMemo(() => {
-    return Array.isArray(list) ? list : [];
-  }, [list]);
+  // Reset page when category filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory]);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const blogs = useMemo(() => (Array.isArray(list) ? list : []), [list]);
 
-  const totalPages = Math.ceil(blogs.length / POSTS_PER_PAGE);
+  const filteredBlogs = useMemo(() => {
+    if (!selectedCategory) return blogs;
+    return blogs.filter((b) => b.category === selectedCategory);
+  }, [blogs, selectedCategory]);
 
+  const totalPages = Math.ceil(filteredBlogs.length / POSTS_PER_PAGE);
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const endIndex = startIndex + POSTS_PER_PAGE;
-  const currentBlogs = blogs.slice(startIndex, endIndex);
+  const currentBlogs = filteredBlogs.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
   const changePage = (page) => {
     if (page < 1 || page > totalPages) return;
@@ -71,65 +74,114 @@ const BlogsSection = () => {
       <div className="blogs-layout">
         {/* LEFT SIDEBAR */}
         <aside className="blogs-sidebar">
+          {/* Categories from backend */}
           <div className="sidebar-card">
             <h3>Categories</h3>
-            <ul>
-              {categories.map((cat, i) => (
-                <li key={i}>{cat}</li>
-              ))}
-            </ul>
+
+            {categoriesLoading ? (
+              <p style={{ color: "#94a3b8", fontSize: "14px" }}>Loading...</p>
+            ) : categories.length > 0 ? (
+              <ul>
+                <li
+                  style={{
+                    cursor: "pointer",
+                    fontWeight: !selectedCategory ? "600" : "400",
+                    color: !selectedCategory ? "#0f172a" : undefined,
+                  }}
+                  onClick={() => setSelectedCategory(null)}
+                >
+                  All
+                </li>
+                {categories.map((cat) => (
+                  <li
+                    key={cat}
+                    style={{
+                      cursor: "pointer",
+                      fontWeight: selectedCategory === cat ? "600" : "400",
+                      color: selectedCategory === cat ? "#0f172a" : undefined,
+                    }}
+                    onClick={() =>
+                      setSelectedCategory(selectedCategory === cat ? null : cat)
+                    }
+                  >
+                    {cat}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p style={{ color: "#94a3b8", fontSize: "14px" }}>
+                No categories yet.
+              </p>
+            )}
           </div>
 
+          {/* Latest Posts */}
           <div className="sidebar-card">
             <h3>Latest Posts</h3>
-            <ol>
-              {blogs.slice(0, 5).map((post, index) => (
-                <li
-                  key={post.id}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigate(`/blog/${post.id}/${post.slug}`)}
-                >
-                  <span className="post-index">{index + 1}</span>
+            {blogs.length > 0 ? (
+              <ol>
+                {blogs.slice(0, 5).map((post, index) => (
+                  <li
+                    key={post.id}
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      navigate(`/blog/${encryptId(post.id)}/${post.slug}`)
+                    }
+                  >
+                    <span className="post-index">{index + 1}</span>
 
-                  <div className="pip">
-                    <p>{post.title}</p>
+                    <div className="pip">
+                      <p>{post.title}</p>
 
-                    <div className="tag-row">
-                      <span className={`tag ${(post.type || "blog").toLowerCase()}`}>
-                        {post.type || "Blog"}
-                      </span>
-                      <span className="date">{formatDate(post.date)}</span>
+                      <div className="tag-row">
+                        <span className={`tag ${(post.type || "blog").toLowerCase()}`}>
+                          {post.type || "Blog"}
+                        </span>
+                        <span className="date">{formatDate(post.date)}</span>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p style={{ color: "#94a3b8", fontSize: "14px" }}>No posts yet.</p>
+            )}
           </div>
         </aside>
 
         {/* BLOG GRID */}
         <div className="blogs-grid">
-          {currentBlogs.map((blog) => (
-            <div
-              className="blog-card"
-              key={blog.id}
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate(`/blog/${blog.id}/${blog.slug}`)}
-            >
-              {blog.image && (
-                <img src={imgSrc(blog.image)} alt={blog.title} />
-              )}
+          {currentBlogs.length > 0 ? (
+            currentBlogs.map((blog) => (
+              <div
+                className="blog-card"
+                key={blog.id}
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  navigate(`/blog/${encryptId(blog.id)}/${blog.slug}`)
+                }
+              >
+                {blog.image && (
+                  <img src={imgSrc(blog.image)} alt={blog.title} />
+                )}
 
-              <div className="blog-card-body">
-                <div className="tag-row">
-                  <span className="tag blog">{blog.type || "Blog"}</span>
-                  <span className="date">{formatDate(blog.date)}</span>
+                <div className="blog-card-body">
+                  <div className="tag-row">
+                    <span className="tag blog">{blog.type || "Blog"}</span>
+                    <span className="date">{formatDate(blog.date)}</span>
+                  </div>
+
+                  <h4>{blog.title}</h4>
                 </div>
-
-                <h4>{blog.title}</h4>
               </div>
+            ))
+          ) : (
+            <div style={{ padding: "40px 0", color: "#64748b" }}>
+              {selectedCategory
+                ? `No blogs found in "${selectedCategory}".`
+                : "No blogs available yet."}
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -143,17 +195,15 @@ const BlogsSection = () => {
             ←
           </button>
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (page) => (
-              <button
-                key={page}
-                className={currentPage === page ? "active" : ""}
-                onClick={() => changePage(page)}
-              >
-                {page}
-              </button>
-            )
-          )}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              className={currentPage === page ? "active" : ""}
+              onClick={() => changePage(page)}
+            >
+              {page}
+            </button>
+          ))}
 
           <button
             onClick={() => changePage(currentPage + 1)}

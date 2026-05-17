@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import slugify from "slugify";
 import Select from "react-select";
 import { useDropzone } from "react-dropzone";
+import axiosInstance from "../../app/axiosinstance";
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -27,7 +28,14 @@ import {
 import { fetchTags } from "../../redux/tags/tagsSlice";
 
 import "./ManageBlogs.css";
-import imgSrc from "../../components/Common/ImgSrc";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+
+const imgSrc = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  return `${API_BASE}${path}`;
+};
 
 const emptyBlog = {
   title:           "",
@@ -43,11 +51,10 @@ const emptyBlog = {
 };
 
 const ManageBlogs = () => {
-
   const dispatch = useDispatch();
 
   const { list = [], loading } = useSelector((state) => state.blogs || {});
-  const { list: tagList = [] } = useSelector((state) => state.tags  || {});
+  const { list: tagList = [] }  = useSelector((state) => state.tags  || {});
 
   const blogs      = Array.isArray(list)    ? list    : [];
   const tagOptions = Array.isArray(tagList)
@@ -57,6 +64,7 @@ const ManageBlogs = () => {
   const [blog, setBlog]               = useState(emptyBlog);
   const [showModal, setShowModal]     = useState(false);
   const [editId, setEditId]           = useState(null);
+  const [imageUploading, setImageUploading] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewHTML, setPreviewHTML] = useState("");
 
@@ -87,10 +95,14 @@ const ManageBlogs = () => {
 
   if (!editor) return null;
 
+  /* ── Cover image dropzone ─────────────────────────────────────────────── */
   const onDrop = (files) => {
     const file = files[0];
     if (!file) return;
-    setBlog((prev) => ({ ...prev, image: { file, url: URL.createObjectURL(file) } }));
+    setBlog((prev) => ({
+      ...prev,
+      image: { file, url: URL.createObjectURL(file) },
+    }));
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -98,26 +110,53 @@ const ManageBlogs = () => {
     onDrop,
   });
 
+  /* ── Inline content image upload ──────────────────────────────────────────
+   * Same pattern as ManageServices / ManageCancers:
+   * upload immediately to /blogs/upload-content-image → get a real server URL
+   * → insert that URL into the editor.
+   * This means the editor JSON always contains real /uploads/... URLs,
+   * so the backend never needs to do any placeholder replacement for content images.
+   * The image shows correctly on edit because the src IS already a persisted URL.
+   * ─────────────────────────────────────────────────────────────────────────── */
   const addImage = () => {
     const input = document.createElement("input");
-    input.type  = "file";
+    input.type   = "file";
     input.accept = "image/*";
-    input.onchange = () => {
-      const file = input.files[0];
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        editor.chain().focus().setImage({ src: reader.result }).run();
-      };
-      reader.readAsDataURL(file);
+
+      setImageUploading(true);
+      try {
+        const form = new FormData();
+        form.append("file", file);
+        const res = await axiosInstance.post(
+          "/blogs/upload-content-image",
+          form,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        const url = res.data?.data?.url || res.data?.url;
+        if (url) editor.chain().focus().setImage({ src: url }).run();
+      } catch {
+        alert("Image upload failed. Please try again.");
+      } finally {
+        setImageUploading(false);
+      }
     };
+
     input.click();
   };
 
-  const openCreate = () => {
+  /* ── Helpers ──────────────────────────────────────────────────────────── */
+  const resetModal = () => {
     setBlog(emptyBlog);
     setEditId(null);
     editor.commands.clearContent();
+  };
+
+  const openCreate = () => {
+    resetModal();
     setShowModal(true);
   };
 
@@ -129,17 +168,15 @@ const ManageBlogs = () => {
       date:            item.date            || "",
       category:        item.category        || "",
       author:          item.author          || "",
-      tags: (item.tags || []).map((t) => ({
-        value: t.id,
-        label: t.tag,
-      })),
-      image: item.image ? { url: imgSrc(item.image) } : null,
+      tags: (item.tags || []).map((t) => ({ value: t.id, label: t.tag })),
+      // Use API_BASE directly — same pattern as ManageCenters / ManageServices
+      image: item.image ? { url: `${API_BASE}${item.image}` } : null,
       metaTitle:       item.metaTitle       || "",
       metaDescription: item.metaDescription || "",
       keywords:        item.keywords        || "",
     });
+
     if (item.content) {
-      // FIX: guard against double-parse; item.content may already be an object
       const content =
         typeof item.content === "string"
           ? (() => { try { return JSON.parse(item.content); } catch { return item.content; } })()
@@ -148,21 +185,25 @@ const ManageBlogs = () => {
     } else {
       editor.commands.clearContent();
     }
+
     setShowModal(true);
   };
 
+  /* ── Save ─────────────────────────────────────────────────────────────── */
   const saveBlog = async () => {
-    // FIX: basic client-side validation before hitting the network
     if (!blog.title.trim()) {
       alert("Title is required.");
       return;
     }
 
-    const formData = new FormData();
-
     const resolvedSlug =
       blog.slug || slugify(blog.title, { lower: true, strict: true });
 
+    // Content images are already uploaded; getJSON() has real /uploads/... URLs.
+    // No placeholder replacement needed — just stringify as-is.
+    const content = editor.getJSON();
+
+    const formData = new FormData();
     formData.append("title",           blog.title);
     formData.append("slug",            resolvedSlug);
     formData.append("date",            blog.date            || "");
@@ -171,41 +212,14 @@ const ManageBlogs = () => {
     formData.append("metaTitle",       blog.metaTitle       || "");
     formData.append("metaDescription", blog.metaDescription || "");
     formData.append("keywords",        blog.keywords        || "");
+    formData.append("content",         JSON.stringify(content));
 
-    const content = editor.getJSON();
-    const imageFiles = [];
-
-    const processNodes = async (nodes) => {
-      for (const node of nodes || []) {
-        if (node.type === "image" && node.attrs?.src?.startsWith("data:")) {
-          const res = await fetch(node.attrs.src);
-          const blob = await res.blob();
-          const file = new File(
-            [blob],
-            `editor-${Date.now()}.png`,
-            { type: blob.type }
-          );
-          imageFiles.push(file);
-          node.attrs.src = `__UPLOAD_${imageFiles.length - 1}__`;
-        }
-        if (node.content) {
-          await processNodes(node.content);
-        }
-      }
-    };
-
-    await processNodes(content.content);
-
-    formData.append("content", JSON.stringify(content));
-
-    imageFiles.forEach((file) => {
-      formData.append("contentImages", file);
-    });
-
+    // Tags: each ID as a separate field so the backend @Transform picks them up
     blog.tags.forEach((tag) => {
-      formData.append("tags", tag.value);
+      formData.append("tags", String(tag.value));
     });
 
+    // Cover image — only if a new file was selected
     if (blog.image?.file) {
       formData.append("image", blog.image.file);
     }
@@ -217,13 +231,9 @@ const ManageBlogs = () => {
       } else {
         await dispatch(createBlog(formData)).unwrap();
       }
-
-      setBlog(emptyBlog);
-      setEditId(null);
-      editor.commands.clearContent();
+      resetModal();
       setShowModal(false);
     } catch (err) {
-      // Error toast is already shown by middleware via error: true
       console.error("Blog save error:", err);
     }
   };
@@ -233,16 +243,10 @@ const ManageBlogs = () => {
     await dispatch(deleteBlog(id));
   };
 
-  // FIX: unified preview helper — works for both new File blobs and existing URL strings
-  const imagePreviewSrc = (img) => {
-    if (!img) return null;
-    return img.url || null;
-  };
-
+  /* ── Render ───────────────────────────────────────────────────────────── */
   return (
     <>
       <div className="admin-centers-page">
-
         <div className="admin-centers-header">
           <h2>Manage Blogs</h2>
           <button className="admin-add-btn" onClick={openCreate}>
@@ -258,6 +262,7 @@ const ManageBlogs = () => {
                 <th>Title</th>
                 <th>Author</th>
                 <th>Category</th>
+                <th>Tags</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
@@ -265,26 +270,40 @@ const ManageBlogs = () => {
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: "center", padding: 24 }}>
+                  <td colSpan={7} style={{ textAlign: "center", padding: 24 }}>
                     Loading…
+                  </td>
+                </tr>
+              )}
+              {!loading && blogs.length === 0 && (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center", padding: 24, color: "#94a3b8" }}>
+                    No blogs found. Click "+ Add Blog" to create one.
                   </td>
                 </tr>
               )}
               {!loading && blogs.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    {item.image && (
+                    {item.image ? (
                       <img
                         src={imgSrc(item.image)}
                         className="admin-table-img"
                         alt=""
                       />
+                    ) : (
+                      <span style={{ color: "#cbd5e1", fontSize: 12 }}>No image</span>
                     )}
                   </td>
                   <td>{item.title}</td>
-                  <td>{item.author}</td>
-                  <td>{item.category}</td>
-                  <td>{item.date}</td>
+                  <td>{item.author || "—"}</td>
+                  <td>{item.category || "—"}</td>
+                  <td>
+                    {item.tags?.length > 0
+                      ? item.tags.map((t) => t.tag).join(", ")
+                      : "—"}
+                  </td>
+                  <td>{item.date || "—"}</td>
                   <td className="admin-actions">
                     <button className="admin-edit-btn"   onClick={() => openEdit(item)}>Edit</button>
                     <button className="admin-delete-btn" onClick={() => handleDelete(item.id)}>Delete</button>
@@ -294,13 +313,11 @@ const ManageBlogs = () => {
             </tbody>
           </table>
         </div>
-
       </div>
 
       {showModal && (
         <div className="admin-modal-overlay">
           <div className="admin-modal">
-
             <h3>{editId ? "Edit Blog" : "Add Blog"}</h3>
 
             <input
@@ -324,7 +341,7 @@ const ManageBlogs = () => {
 
             {blog.image && (
               <img
-                src={imagePreviewSrc(blog.image)}
+                src={blog.image.url}
                 alt="Blog cover"
                 className="hero-preview"
               />
@@ -370,6 +387,7 @@ const ManageBlogs = () => {
                 isMulti
                 value={blog.tags}
                 onChange={(val) => setBlog((prev) => ({ ...prev, tags: val || [] }))}
+                noOptionsMessage={() => tagOptions.length === 0 ? "No tags available" : "No options"}
               />
             </div>
 
@@ -395,7 +413,9 @@ const ManageBlogs = () => {
               >
                 Link
               </button>
-              <button onClick={addImage}>Image</button>
+              <button onClick={addImage} disabled={imageUploading}>
+                {imageUploading ? "Uploading…" : "Image"}
+              </button>
             </div>
 
             <EditorContent editor={editor} className="notion-editor" />
@@ -420,17 +440,23 @@ const ManageBlogs = () => {
             </div>
 
             <div className="admin-modal-actions">
-              <button className="admin-submit-btn" onClick={saveBlog} disabled={loading}>
+              <button
+                className="admin-submit-btn"
+                onClick={saveBlog}
+                disabled={loading || imageUploading}
+              >
                 {loading ? "Saving…" : editId ? "Update Blog" : "Publish Blog"}
               </button>
-              <button className="admin-cancel-btn" onClick={() => setShowModal(false)}>
+              <button
+                className="admin-cancel-btn"
+                onClick={() => { resetModal(); setShowModal(false); }}
+              >
                 Cancel
               </button>
               <button className="publish-btn" onClick={() => setPreviewOpen(true)}>
                 Preview
               </button>
             </div>
-
           </div>
         </div>
       )}
@@ -438,17 +464,12 @@ const ManageBlogs = () => {
       {previewOpen && (
         <div className="blog-preview-modal">
           <div className="blog-preview-container">
-
             <button className="preview-close" onClick={() => setPreviewOpen(false)}>
               Close Preview
             </button>
 
             {blog.image && (
-              <img
-                src={imagePreviewSrc(blog.image)}
-                className="preview-hero"
-                alt=""
-              />
+              <img src={blog.image.url} className="preview-hero" alt="" />
             )}
 
             <h1 className="preview-title">{blog.title || "Blog Title"}</h1>
@@ -462,7 +483,6 @@ const ManageBlogs = () => {
               className="preview-body"
               dangerouslySetInnerHTML={{ __html: previewHTML }}
             />
-
           </div>
         </div>
       )}

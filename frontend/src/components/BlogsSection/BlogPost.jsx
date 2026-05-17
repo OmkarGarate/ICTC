@@ -2,7 +2,8 @@ import "./BlogPost.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogById, fetchBlogs } from "../../redux/blogs/blogsSlice";
+import { fetchBlogById, fetchSimilarBlogs, clearSimilarBlogs } from "../../redux/blogs/blogsSlice";
+import { encryptId, decryptId } from "../Common/Idcrypto";
 import imgSrc from "../Common/ImgSrc";
 
 import userIcon from "../../assets/solar_user-bold.png";
@@ -15,13 +16,20 @@ const BlogPost = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { selected: blog, list: allBlogs, loading } = useSelector((state) => state.blogs || {});
+  const { selected: blog, similar: similarBlogs, loading } = useSelector(
+    (state) => state.blogs || {}
+  );
+
+  const numericId = decryptId(id) ?? Number(id);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchBlogById(id));
+    if (numericId) {
+      dispatch(fetchBlogById(numericId));
+      dispatch(fetchSimilarBlogs({ id: numericId, limit: 3 }));
     }
-    dispatch(fetchBlogs());
+    return () => {
+      dispatch(clearSimilarBlogs());
+    };
   }, [id, dispatch]);
 
   if (loading) {
@@ -29,23 +37,21 @@ const BlogPost = () => {
   }
 
   if (!blog || !blog.content) {
-    return <p style={{ padding: "40px" }}>Blog not found.</p>;
+    return (
+      <div style={{ padding: "60px", textAlign: "center" }}>
+        <h2>Blog not found</h2>
+        <p style={{ color: "#64748b", marginTop: "8px" }}>
+          The blog you're looking for doesn't exist or has been removed.
+        </p>
+      </div>
+    );
   }
-
-  const similarBlogs = Array.isArray(allBlogs) 
-    ? allBlogs.filter((b) => b.id !== blog.id).slice(0, 3)
-    : [];
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
-
     try {
       if (navigator.share) {
-        await navigator.share({
-          title: blog.title,
-          text: blog.title,
-          url: shareUrl,
-        });
+        await navigator.share({ title: blog.title, text: blog.title, url: shareUrl });
       } else {
         await navigator.clipboard.writeText(shareUrl);
         alert("Link copied! You can now share it.");
@@ -58,29 +64,20 @@ const BlogPost = () => {
   const renderContent = (content) => {
     if (!content) return null;
 
-    // If content is TipTap JSON
     if (typeof content === "object" && content.type === "doc") {
       return convertTipTapToBlocks(content);
     }
 
-    // If content is array of blocks (old format)
     if (Array.isArray(content)) {
       return content.map((block, index) => {
-        if (block.type === "paragraph")
-          return <p key={index}>{block.text}</p>;
-
-        if (block.type === "heading")
-          return <h2 key={index}>{block.text}</h2>;
-
+        if (block.type === "paragraph") return <p key={index}>{block.text}</p>;
+        if (block.type === "heading")   return <h2 key={index}>{block.text}</h2>;
         if (block.type === "list")
           return (
             <ul key={index}>
-              {block.items.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
+              {block.items.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           );
-
         if (block.type === "image")
           return (
             <div key={index} className="ictc-blogpost-inline-img-wrapper">
@@ -92,7 +89,6 @@ const BlogPost = () => {
               />
             </div>
           );
-
         return null;
       });
     }
@@ -107,30 +103,27 @@ const BlogPost = () => {
       switch (node.type) {
         case "paragraph":
           return <p key={index}>{getTextFromNode(node)}</p>;
-        
-        case "heading":
+
+        case "heading": {
           const level = node.attrs?.level || 2;
           const Heading = `h${level}`;
           return <Heading key={index}>{getTextFromNode(node)}</Heading>;
-        
+        }
+
         case "bulletList":
           return (
             <ul key={index}>
-              {node.content?.map((item, i) => (
-                <li key={i}>{getTextFromNode(item)}</li>
-              ))}
+              {node.content?.map((item, i) => <li key={i}>{getTextFromNode(item)}</li>)}
             </ul>
           );
-        
+
         case "orderedList":
           return (
             <ol key={index}>
-              {node.content?.map((item, i) => (
-                <li key={i}>{getTextFromNode(item)}</li>
-              ))}
+              {node.content?.map((item, i) => <li key={i}>{getTextFromNode(item)}</li>)}
             </ol>
           );
-        
+
         case "image":
           return (
             <div key={index} className="ictc-blogpost-inline-img-wrapper">
@@ -142,7 +135,7 @@ const BlogPost = () => {
               />
             </div>
           );
-        
+
         default:
           return null;
       }
@@ -151,20 +144,17 @@ const BlogPost = () => {
 
   const getTextFromNode = (node) => {
     if (!node.content) return "";
-    
     return node.content.map((c, i) => {
       if (c.type === "text") {
         let text = c.text;
-        
         if (c.marks) {
-          c.marks.forEach(mark => {
-            if (mark.type === "bold") return <strong key={i}>{text}</strong>;
-            if (mark.type === "italic") return <em key={i}>{text}</em>;
+          for (const mark of c.marks) {
+            if (mark.type === "bold")      return <strong key={i}>{text}</strong>;
+            if (mark.type === "italic")    return <em key={i}>{text}</em>;
             if (mark.type === "underline") return <u key={i}>{text}</u>;
-            if (mark.type === "link") return <a key={i} href={mark.attrs.href}>{text}</a>;
-          });
+            if (mark.type === "link")      return <a key={i} href={mark.attrs.href}>{text}</a>;
+          }
         }
-        
         return text;
       }
       return "";
@@ -216,10 +206,7 @@ const BlogPost = () => {
                   <span>by {blog.author || "ICTC Team"}</span>
                 </div>
 
-                <button
-                  className="ictc-blogpost-share-btn"
-                  onClick={handleShare}
-                >
+                <button className="ictc-blogpost-share-btn" onClick={handleShare}>
                   <img src={shareIcon} alt="Share blog" />
                   Share
                 </button>
@@ -235,27 +222,33 @@ const BlogPost = () => {
 
         {/* RIGHT SIDEBAR */}
         <aside className="ictc-blogpost-sidebar">
-          <h3 className="ictc-blogpost-sidebar-title">
-            Similar Blogs
-          </h3>
+          <h3 className="ictc-blogpost-sidebar-title">Similar Blogs</h3>
 
-          {similarBlogs.map((item) => (
-            <div
-              key={item.id}
-              className="ictc-blogpost-similar-card"
-              onClick={() => navigate(`/blog/${item.id}/${item.slug}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <img src={imgSrc(item.image)} alt={item.title} />
+          {Array.isArray(similarBlogs) && similarBlogs.length > 0 ? (
+            similarBlogs.map((item) => (
+              <div
+                key={item.id}
+                className="ictc-blogpost-similar-card"
+                onClick={() =>
+                  navigate(`/blog/${encryptId(item.id)}/${item.slug}`)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <img src={imgSrc(item.image)} alt={item.title} />
 
-              <div className="ictc-blogpost-meta-tags">
-                <span className="tag blog">{item.type || "Blog"}</span>
-                <span className="date">{formatDate(item.date)}</span>
+                <div className="ictc-blogpost-meta-tags">
+                  <span className="tag blog">{item.type || "Blog"}</span>
+                  <span className="date">{formatDate(item.date)}</span>
+                </div>
+
+                <p className="ictc-blg-text">{item.title}</p>
               </div>
-
-              <p className="ictc-blg-text">{item.title}</p>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p style={{ color: "#94a3b8", fontSize: "14px" }}>
+              No similar blogs found.
+            </p>
+          )}
 
           {/* CTA */}
           <div className="ictc-blogpost-cta">

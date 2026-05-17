@@ -8,7 +8,7 @@
 
     import { DB_CONSTANTS } from '../../../common/constants/db.constants';
 
-    @Entity({ name: 'centers' })
+    @Entity({ schema: 'hospital', name: 'centers' })
     export class Center {
 
     @PrimaryGeneratedColumn()

@@ -106,7 +106,7 @@ import "./ServicePage.css";
 import arrowIcon from "../../assets/cuida_dropdown-outline.png";
 
 const ServicePage = () => {
-  const { id } = useParams();
+  const { slug, id } = useParams();
   const dispatch = useDispatch();
   const { selected: data, loading, error } = useSelector((state) => state.services);
   const [activeIndex, setActiveIndex] = useState(null);

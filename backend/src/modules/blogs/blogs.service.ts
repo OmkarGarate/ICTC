@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, In } from 'typeorm';
+import { Repository, DataSource, In, Not } from 'typeorm';
 
 import { Blog } from './entities/blog.entity';
 import { BlogTag } from './entities/blog-tag.entity';
@@ -72,7 +72,6 @@ export class BlogsService {
       });
 
       if (existing) {
-        // FIX: delete uploaded files before throwing so disk isn't polluted
         deleteFiles(files);
         throw new BadRequestException('Slug already exists');
       }
@@ -134,11 +133,27 @@ export class BlogsService {
 
       const tagIds = dto.tags || [];
 
+      const savedBlogTags: BlogTag[] = [];
       for (const tagId of tagIds) {
-        await manager.save(BlogTag, { blogId: blog.id, tagId });
+        const bt = await manager.save(BlogTag, { blogId: blog.id, tagId });
+        savedBlogTags.push(bt);
       }
 
-      return this.findOne(blog.id);
+      // FIX: Build the return value within the transaction using `manager`
+      // Previously called this.findOne(blog.id) which uses this.repo (outside tx),
+      // and on some DB configs the newly-inserted row isn't visible yet → NotFoundException.
+      const masterTagIds = [...new Set(savedBlogTags.map((bt) => bt.tagId))];
+      const masterTags = masterTagIds.length
+        ? await manager.find(Tag, { where: { id: In(masterTagIds) } })
+        : [];
+
+      return {
+        ...blog,
+        tags: savedBlogTags
+          .map((bt) => masterTags.find((mt) => mt.id === bt.tagId))
+          .filter(Boolean),
+        content: blog.content ? this.parseContent(blog.content) : null,
+      };
     });
   }
 
@@ -185,6 +200,69 @@ export class BlogsService {
     return result;
   }
 
+  /**
+   * Find similar blogs: same category, excluding current blog.
+   * Falls back to latest blogs if no same-category siblings exist.
+   */
+  async findSimilar(id: number, limit = 3) {
+    const current = await this.repo.findOne({
+      where: { id, isDeleted: false },
+    });
+
+    if (!current) throw new NotFoundException('Blog not found');
+
+    let similar: Blog[] = [];
+
+    if (current.category) {
+      similar = await this.repo.find({
+        where: {
+          isDeleted: false,
+          category: current.category,
+          id: Not(id),
+        },
+        order: { createdAt: 'DESC' },
+        take: limit,
+      });
+    }
+
+    if (similar.length < limit) {
+      const needed = limit - similar.length;
+      const existingIds = [id, ...similar.map((b) => b.id)];
+
+      const extras = await this.repo.find({
+        where: { isDeleted: false },
+        order: { createdAt: 'DESC' },
+        take: limit + existingIds.length,
+      });
+
+      const filtered = extras
+        .filter((b) => !existingIds.includes(b.id))
+        .slice(0, needed);
+
+      similar = [...similar, ...filtered];
+    }
+
+    if (!similar.length) return [];
+
+    return this.attachTags(similar);
+  }
+
+  /**
+   * Return distinct non-null category values from all active blogs.
+   */
+  async findCategories(): Promise<string[]> {
+    const rows = await this.repo
+      .createQueryBuilder('blog')
+      .select('DISTINCT blog.category', 'category')
+      .where('blog.isDeleted = false')
+      .andWhere('blog.category IS NOT NULL')
+      .andWhere("blog.category != ''")
+      .orderBy('blog.category', 'ASC')
+      .getRawMany();
+
+    return rows.map((r) => r.category as string).filter(Boolean);
+  }
+
   async update(id: number, dto: UpdateBlogDto, files?: any) {
     return await this.dataSource.transaction(async (manager) => {
 
@@ -194,9 +272,6 @@ export class BlogsService {
 
       if (!blog) throw new NotFoundException('Blog not found');
 
-      // FIX: validate slug conflict BEFORE deleting existing tags.
-      // Original code deleted tags first, then threw on slug conflict,
-      // leaving the blog permanently stripped of its tags.
       if (dto.slug && dto.slug !== blog.slug) {
         const exists = await manager.findOne(Blog, {
           where: { slug: dto.slug },
@@ -212,7 +287,6 @@ export class BlogsService {
         blog.image = `/uploads/${files.image[0].filename}`;
       }
 
-      // Now safe to delete and re-insert tags
       await manager.delete(BlogTag, { blogId: id });
 
       const tagIds = dto.tags || [];

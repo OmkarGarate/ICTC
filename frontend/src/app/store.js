@@ -8,6 +8,7 @@ import cancersReducer          from '../redux/cancers/cancersSlice';
 import toastReducer            from '../redux/toast/toastSlice';
 import blogsReducer            from '../redux/blogs/blogsSlice';
 import tagsReducer             from '../redux/tags/tagsSlice';
+import dashboardReducer        from '../redux/dashboard/dashboardSlice';
 
 import { toastMiddleware } from '../middleware/Toastmiddleware';
 
@@ -22,6 +23,7 @@ const store = configureStore({
     toast:              toastReducer,
     blogs:              blogsReducer,
     tags:               tagsReducer,
+    dashboard:          dashboardReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

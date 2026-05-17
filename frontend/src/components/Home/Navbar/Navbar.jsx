@@ -417,9 +417,9 @@ const Navbar = () => {
 
     servicesData.forEach((svc) => {
       if (svc.categoryId && catMap[svc.categoryId]) {
-        catMap[svc.categoryId].services.push({ slug: svc.slug, name: svc.title });
+        catMap[svc.categoryId].services.push({ slug: svc.slug, name: svc.title, id: svc.id });
       } else {
-        uncategorised.push({ slug: svc.slug, name: svc.title });
+       uncategorised.push({ slug: svc.slug, name: svc.title, id: svc.id });
       }
     });
 
@@ -542,7 +542,10 @@ const Navbar = () => {
                 {items.map((item) => (
                   <p
                     key={item.slug}
-                    onClick={() => handleNavigate(`/Services/${item.slug}/${item.id}`)}
+                    onClick={() => {
+                      handleNavigate(`/Services/${item.slug}/${item.id}`);
+                      console.log("item:", item);
+                    }}
                   >
                     {item.name}
                   </p>

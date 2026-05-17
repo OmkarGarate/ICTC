@@ -145,10 +145,10 @@ const ManageCenters = () => {
     try {
       if (editId) {
         await dispatch(updateCenter({ id: editId, data: formData })).unwrap();
-        toast.success("Center updated successfully!");
+        // toast.success("Center updated successfully!");
       } else {
         await dispatch(createCenter(formData)).unwrap();
-        toast.success("Center created successfully!");
+        // toast.success("Center created successfully!");
       }
 
       setForm(emptyForm);
@@ -198,7 +198,7 @@ const ManageCenters = () => {
     if (!window.confirm("Delete this center?")) return;
     try {
       await dispatch(deleteCenter(id)).unwrap();
-      toast.success("Center deleted.");
+      // toast.success("Center deleted.");
       dispatch(fetchCenters());
     } catch (err) {
       toast.error("Failed to delete center. Please try again.");

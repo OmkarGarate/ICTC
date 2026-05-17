@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'cancer_faqs' })
+@Entity({ schema: 'hospital', name: 'cancer_faqs' })
 export class CancerFaq {
   @PrimaryGeneratedColumn()
   id!: number;

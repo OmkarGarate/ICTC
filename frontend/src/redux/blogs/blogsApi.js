@@ -11,6 +11,20 @@ export const fetchBlogByIdApi = (id) =>
 export const fetchBlogBySlugApi = (slug) =>
   axiosInstance.get(`${BASE}/slug/${slug}`);
 
+/**
+ * Fetch blogs in the same category as the given blog id.
+ * GET /blogs/:id/similar?limit=3
+ */
+export const fetchSimilarBlogsApi = (id, limit = 3) =>
+  axiosInstance.get(`${BASE}/${id}/similar?limit=${limit}`);
+
+/**
+ * Fetch distinct category strings from all active blogs.
+ * GET /blogs/categories
+ */
+export const fetchBlogCategoriesApi = () =>
+  axiosInstance.get(`${BASE}/categories`);
+
 export const createBlogApi = (formData) =>
   axiosInstance.post(BASE, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

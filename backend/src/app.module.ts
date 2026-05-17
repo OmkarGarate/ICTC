@@ -9,8 +9,10 @@ import { CentersModule } from './modules/centers/centers.module';
 import { DoctorsModule } from './modules/doctors/doctors.module';
 import { ServicesModule } from './modules/services/services.module';
 import { CancersModule } from './modules/cancers/cancers.module';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { BlogsModule } from './modules/blogs/blogs.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -43,7 +45,8 @@ import { BlogsModule } from './modules/blogs/blogs.module';
     DoctorsModule,
     ServicesModule,
     CancersModule,
-    BlogsModule
+    BlogsModule,
+    DashboardModule,
 
   ],
 })

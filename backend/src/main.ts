@@ -20,7 +20,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://project-g8lns.vercel.app'],
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'https://project-g8lns.vercel.app',  // ✅ production frontend
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -28,10 +32,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  // ✅ Cookie parser
   app.use(cookieParser());
 
-  // ✅ Serve uploads folder
   const uploadPath = join(process.cwd(), 'uploads');
   if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
@@ -41,12 +43,16 @@ async function bootstrap() {
     prefix: '/uploads/',
   });
 
-  // ✅ Global configs
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe());
 
-  // ✅ Swagger setup
+  // ✅ Using the more complete ValidationPipe config from local version
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: false,
+  }));
+
   const config = new DocumentBuilder()
     .setTitle('Hospital API')
     .setDescription('Hospital Management Backend APIs with integrated authentication')
@@ -57,11 +63,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  // ✅ Run seeders
   const dataSource = app.get(DataSource);
   await seedBlogTags(dataSource);
 
-  // ✅ Port from env
   const port = configService.get<number>('PORT', 3000);
 
   await app.listen(port);

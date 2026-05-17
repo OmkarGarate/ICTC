@@ -30,3 +30,19 @@
   font-size: 26px;
   color: #0f172a;
 }
+
+/* Skeleton loader for counts while fetching */
+.dashboard-skeleton {
+  width: 60px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  margin-top: 4px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
