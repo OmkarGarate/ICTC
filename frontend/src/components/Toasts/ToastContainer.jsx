@@ -73,7 +73,7 @@ const ToastContainer = () => (
     <Toaster
       position="top-right"
       gutter={10}
-      containerStyle={{ top: 70 }}   /* nudge below your navbar */
+      containerStyle={{ top: 70, zIndex: 999999 }}   /* nudge below your navbar */
       toastOptions={{
         /* Shared defaults */
         style: {

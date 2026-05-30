@@ -902,6 +902,8 @@ import {
   deleteCancer,
 } from "../../redux/cancers/cancersSlice";
 
+import { fetchCancerCategories } from "../../redux/cancerCategories/cancerCategoriesSlice";
+
 import { uploadCancerContentImageApi } from "../../redux/cancers/cancersApi";
 
 import "./ManageServices.css";
@@ -927,7 +929,8 @@ const emptyCancer = {
   altText: "",
   metaTitle: "",
   metaDescription: "",
-  faqs: []
+  faqs: [],
+  categoryId: "",
 };
 
 const ManageCancers = () => {
@@ -938,6 +941,8 @@ const ManageCancers = () => {
     list: cancers,
     loading,
   } = useSelector((state) => state.cancers);
+
+  const { list: categories = [] } = useSelector((state) => state.cancerCategories);
 
   const scrollRef = useRef();
 
@@ -970,6 +975,7 @@ const ManageCancers = () => {
   useEffect(() => {
 
     dispatch(fetchCancers());
+    dispatch(fetchCancerCategories());
 
   }, [dispatch]);
 
@@ -1166,6 +1172,11 @@ const ManageCancers = () => {
         cancer.metaDescription
       );
 
+      if (cancer.categoryId) {
+        formData.append("categoryId", String(cancer.categoryId));
+      }
+      // If no category selected, don't append — backend will treat missing field as null
+
       formData.append(
         "overview",
         updatedContent["Overview"] || ""
@@ -1259,7 +1270,8 @@ const ManageCancers = () => {
     setCancer({
   ...item,
   image: item.coverImage,
-  metaTitle: item.seoTitle
+  metaTitle: item.seoTitle,
+  categoryId: item.categoryId ?? "",
 });
 
     const contentData = {
@@ -1298,6 +1310,12 @@ const ManageCancers = () => {
 
     dispatch(fetchCancers());
 
+  };
+
+  const getCategoryName = (categoryId) => {
+    if (!categoryId) return "—";
+    const cat = categories.find((c) => c.id === categoryId);
+    return cat ? cat.name : "—";
   };
 
   const imgSrc = (path) => {
@@ -1358,6 +1376,7 @@ const ManageCancers = () => {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Slug</th>
                 <th>Meta Title</th>
                 <th>Actions</th>
@@ -1386,6 +1405,12 @@ src={imgSrc(item.coverImage)}                        className="admin-table-img"
                   </td>
 
                   <td>{item.name}</td>
+
+                  <td>
+                    <span className="category-badge">
+                      {getCategoryName(item.categoryId)}
+                    </span>
+                  </td>
 
                   <td>{item.slug}</td>
 
@@ -1455,6 +1480,31 @@ src={imgSrc(item.coverImage)}                        className="admin-table-img"
                 })
               }
             />
+
+            {/* ── CATEGORY DROPDOWN ── */}
+            <label>Category</label>
+            <select
+              className="service-category-select"
+              value={cancer.categoryId ?? ""}
+              onChange={(e) =>
+                setCancer((p) => ({
+                  ...p,
+                  categoryId: e.target.value ? Number(e.target.value) : "",
+                }))
+              }
+            >
+              <option value="">— No Category —</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            {categories.length === 0 && (
+              <p className="category-hint">
+                No categories yet. Go to <strong>Cancer Categories</strong> in the sidebar to create some.
+              </p>
+            )}
 
             <label>
               Cover Image

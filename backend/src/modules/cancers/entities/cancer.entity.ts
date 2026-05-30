@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { DB_CONSTANTS } from '../../../common/constants/db.constants';
+import { CancerCategory } from './cancer-category';
 
 @Entity({ schema: 'hospital', name: 'cancers' })
 export class Cancer {
@@ -30,6 +33,14 @@ export class Cancer {
 
   @Column({ type: 'text', nullable: true })
   metaDescription?: string;
+
+  // ── Category (optional) ──────────────────────────────────────────────────
+  @Column({ nullable: true })
+  categoryId?: number;
+
+  @ManyToOne(() => CancerCategory, { nullable: true, onDelete: 'SET NULL', eager: false })
+  @JoinColumn({ name: 'categoryId' })
+  category?: CancerCategory;
 
   // ── Rich-text sections (each tab = one HTML column) ──────────────────────
 

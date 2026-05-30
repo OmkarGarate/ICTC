@@ -56,7 +56,8 @@ export class CancersController {
     return undefined;
   }
 
-  // ── CONTENT IMAGE UPLOAD (shared across all tab editors) ─────────────────
+  // ── CONTENT IMAGE UPLOAD ─────────────────────────────────────────────────
+  // IMPORTANT: Must be declared BEFORE @Post() to avoid route conflicts.
   @Post('upload-content-image')
   @ApiOperation({ summary: 'Upload an inline image for any rich-text tab editor' })
   @ApiConsumes('multipart/form-data')
@@ -86,6 +87,28 @@ export class CancersController {
     };
   }
 
+  // ── FIND ALL ──────────────────────────────────────────────────────────────
+  @Get()
+  @ApiQuery({ name: 'isDeleted', required: false, type: Boolean })
+  findAll(@Query('isDeleted') isDeleted?: any) {
+    return this.service.findAll(this.parseBoolean(isDeleted));
+  }
+
+  // ── FIND BY SLUG ──────────────────────────────────────────────────────────
+  // IMPORTANT: Must be declared BEFORE @Get(':id') — otherwise NestJS matches
+  // the literal string "slug" as the :id param, causing a DB lookup for NaN.
+  @Get('slug/:slug')
+  findBySlug(@Param('slug') slug: string) {
+    return this.service.findBySlug(slug);
+  }
+
+  // ── RESTORE ────────────────────────────────────────────────────────────────
+  // IMPORTANT: Must also be declared before @Put(':id') for the same reason.
+  @Put('restore/:id')
+  restore(@Param('id') id: string) {
+    return this.service.restore(+id);
+  }
+
   // ── CREATE ────────────────────────────────────────────────────────────────
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -100,23 +123,10 @@ export class CancersController {
     return this.service.create(dto, files);
   }
 
-  // ── FIND ALL ──────────────────────────────────────────────────────────────
-  @Get()
-  @ApiQuery({ name: 'isDeleted', required: false, type: Boolean })
-  findAll(@Query('isDeleted') isDeleted?: any) {
-    return this.service.findAll(this.parseBoolean(isDeleted));
-  }
-
   // ── FIND ONE ──────────────────────────────────────────────────────────────
   @Get(':id')
   findOne(@Param('id') id: string, @Query('isDeleted') isDeleted?: any) {
     return this.service.findOne(+id, this.parseBoolean(isDeleted));
-  }
-
-  // ── FIND BY SLUG ──────────────────────────────────────────────────────────
-  @Get('slug/:slug')
-  findBySlug(@Param('slug') slug: string) {
-    return this.service.findBySlug(slug);
   }
 
   // ── UPDATE ────────────────────────────────────────────────────────────────
@@ -138,11 +148,5 @@ export class CancersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.service.remove(+id);
-  }
-
-  // ── RESTORE ───────────────────────────────────────────────────────────────
-  @Put('restore/:id')
-  restore(@Param('id') id: string) {
-    return this.service.restore(+id);
   }
 }

@@ -1,0 +1,50 @@
+/* ── PageLoader skeleton ────────────────────────────────────────────────────── */
+
+.page-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.page-loader-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.page-loader-cell {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+/* First cell narrower — mimics a row-number or ID column */
+.page-loader-row .page-loader-cell:first-child {
+  max-width: 50px;
+}
+
+/* Last cell narrower — mimics an Actions column */
+.page-loader-row .page-loader-cell:last-child {
+  max-width: 120px;
+}
+
+/* ── Shimmer animation ───────────────────────────────────────────────────────── */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 37%,
+    #f0f0f0 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}

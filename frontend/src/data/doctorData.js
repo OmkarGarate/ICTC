@@ -851,7 +851,7 @@ const doctorData = {
 
   rating: "4.9",
   reviews: "100+ Ratings",
-  phone: "+91 9699711195",
+  phone: "+91 9326911195",
 
   centres: ["ICTC Thane"],
   languages: ["English", "Hindi", "Marathi", "Gujarati"],

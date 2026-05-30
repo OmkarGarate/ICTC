@@ -1,0 +1,68 @@
+.all-cancer-page {
+  padding: 40px 40px 40px 60px;
+}
+
+.all-cancer-page .services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.all-cancer-page .service-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1px solid rgba(183, 129, 205, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  background: #fff;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.all-cancer-page .service-card:hover {
+  box-shadow: 0 4px 16px rgba(105, 60, 121, 0.15);
+  transform: translateY(-2px);
+}
+
+.all-cancer-page .service-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.all-cancer-page .service-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.all-cancer-page .service-content h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(48, 45, 49, 1);
+  font-family: "DM Sans", sans-serif;
+}
+
+@media (max-width: 1199px) {
+  .all-cancer-page .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .all-cancer-page {
+    padding: 48px 14px;
+  }
+  .all-cancer-page .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .all-cancer-page {
+    padding: 32px 10px;
+  }
+}

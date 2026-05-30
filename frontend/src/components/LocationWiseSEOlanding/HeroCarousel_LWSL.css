@@ -1,0 +1,270 @@
+/* ================= HERO CAROUSEL ================= */
+
+.hero-carousel {
+  position: relative;
+  background: #f5f5f5;
+  padding: 60px 0 120px;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+}
+
+/* ================= HERO LAYOUT ================= */
+
+.hero-wrapper {
+  width: 90%;
+  max-width: 1280px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+/* ================= LEFT CONTENT ================= */
+
+.hero-content {
+  flex: 0 0 42%;
+}
+
+.hero-content h1 {
+  margin: 0 0 24px;
+
+  font-size: 58px;
+  line-height: 1.05;
+  font-weight: 700;
+
+  color: #43245e;
+}
+
+.hero-content p {
+  margin: 0;
+
+  max-width: 520px;
+
+  font-size: 22px;
+  line-height: 1.7;
+  color: #5b5560;
+}
+
+/* ================= RIGHT IMAGE ================= */
+
+.hero-image-wrapper {
+  flex: 0 0 55%;
+}
+
+.hero-image {
+  width: 100%;
+  display: block;
+  border-radius: 24px;
+}
+
+/* ================= QUICK CTA ================= */
+
+.quick-cta {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 48px;
+  border: 1px solid rgba(18, 16, 18, 1);
+
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+
+  z-index: 20;
+  overflow: visible;
+}
+
+/* ================= CLOSE BUTTON ================= */
+
+.cta-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  border: none;
+  background: #000;
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ================= CTA BUTTON ================= */
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cta-btn.white {
+  background: #fff;
+  color: #302d31;
+
+  border-top-left-radius: 48px;
+  border-bottom-left-radius: 48px;
+}
+
+.cta-btn.grey {
+  background: #e4e3e5;
+  color: #302d31;
+
+  border-top-right-radius: 48px;
+  border-bottom-right-radius: 48px;
+}
+
+.cta-btn span {
+  font-size: 24px;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+
+.cta-btn:hover span {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* ================= LARGE DESKTOP ================= */
+
+@media (min-width: 1400px) {
+  .hero-content h1 {
+    font-size: 64px;
+  }
+
+  .hero-content p {
+    font-size: 24px;
+  }
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 1024px) {
+  .hero-carousel {
+    padding: 40px 0 110px;
+  }
+
+  .hero-wrapper {
+    gap: 32px;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .hero-carousel {
+    padding: 30px 0 180px;
+  }
+
+  .hero-wrapper {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .hero-content,
+  .hero-image-wrapper {
+    width: 100%;
+    flex: unset;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .hero-content p {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .quick-cta {
+    flex-direction: column;
+    width: calc(100% - 32px);
+
+    left: 16px;
+    transform: none;
+
+    border-radius: 20px;
+  }
+
+  .cta-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 14px 20px;
+  }
+
+  .cta-btn.white {
+    border-radius: 20px 20px 0 0;
+  }
+
+  .cta-btn.grey {
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 28px;
+  }
+
+  .hero-content p {
+    font-size: 13px;
+  }
+
+  .cta-btn {
+    font-size: 13px;
+    padding: 12px 16px;
+  }
+}
+
+/* ================= HIDE CLOSE BUTTON ================= */
+
+@media (max-width: 1179px) {
+  .cta-close {
+    display: none;
+    pointer-events: none;
+  }
+}

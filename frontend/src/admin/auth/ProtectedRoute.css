@@ -1,0 +1,68 @@
+/* ── ProtectedRoute full-page auth loader ──────────────────────────────────── */
+
+.auth-loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  z-index: 9999;
+}
+
+.auth-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Triple-ring spinner */
+.auth-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.auth-spinner-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: auth-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.auth-spinner-ring:nth-child(1) {
+  border-top-color: #2563eb;
+  animation-delay: 0s;
+}
+
+.auth-spinner-ring:nth-child(2) {
+  inset: 8px;
+  border-top-color: #60a5fa;
+  animation-delay: -0.4s;
+}
+
+.auth-spinner-ring:nth-child(3) {
+  inset: 16px;
+  border-top-color: #93c5fd;
+  animation-delay: -0.8s;
+}
+
+@keyframes auth-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auth-loading-text {
+  font-size: 0.875rem;
+  color: #64748b;
+  letter-spacing: 0.04em;
+  margin: 0;
+  animation: auth-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes auth-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}

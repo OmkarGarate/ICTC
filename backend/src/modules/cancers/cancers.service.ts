@@ -8,6 +8,7 @@ import { Repository, DataSource, In } from 'typeorm';
 
 import { Cancer } from './entities/cancer.entity';
 import { CancerFaq } from './entities/cancer-faq.entity';
+import { CancerCategory } from './entities/cancer-category';
 
 import { CreateCancerDto, FaqItemDto } from './dto/create-cancer.dto';
 import { UpdateCancerDto } from './dto/update-cancer.dto';
@@ -72,7 +73,10 @@ export class CancersService {
   }
 
   private async buildResponse(cancerId: number, manager = this.dataSource.manager) {
-    const cancer = await manager.findOne(Cancer, { where: { id: cancerId } });
+    const cancer = await manager.findOne(Cancer, {
+      where: { id: cancerId },
+      relations: ['category'],
+    });
     if (!cancer) return null;
 
     const faqs = await manager.find(CancerFaq, {
@@ -106,6 +110,7 @@ export class CancersService {
           seoTitle: dto.seoTitle,
           metaDescription: dto.metaDescription,
           coverImage: coverImageFile ? `/uploads/${coverImageFile}` : null,
+          categoryId: dto.categoryId ?? null,
           // Rich-text sections
           overview: dto.overview,
           riskFactors: dto.riskFactors,
@@ -136,6 +141,7 @@ export class CancersService {
 
     const cancers = await this.repo.find({
       where: { isDeleted: filter },
+      relations: ['category'],
       order: { createdAt: 'DESC' },
     });
 
@@ -200,11 +206,11 @@ export class CancersService {
 
         // Scalar fields
         const scalarFields: Array<keyof Cancer> = [
-          'slug', 'name', 'altText', 'seoTitle', 'metaDescription',
+          'slug', 'name', 'altText', 'seoTitle', 'metaDescription', 'categoryId',
         ];
         for (const field of scalarFields) {
           if ((dto as any)[field] !== undefined) {
-            (cancer as any)[field] = (dto as any)[field];
+            (cancer as any)[field] = (dto as any)[field] === '' ? null : (dto as any)[field];
           }
         }
 

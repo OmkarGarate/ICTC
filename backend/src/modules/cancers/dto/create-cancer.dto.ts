@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsInt, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class FaqItemDto {
   @ApiProperty({ example: 'Is breast cancer curable?' })
@@ -34,6 +35,20 @@ export class CreateCancerDto {
   @IsOptional()
   @IsString()
   metaDescription?: string;
+
+  // ── Category ────────────────────────────────────────────────────────────
+  // Comes in as a string from multipart/form-data.
+  // Empty string or missing → treated as null (no category).
+  @ApiPropertyOptional({ example: 1, description: 'ID of the cancer category' })
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (value === '' || value === null || value === undefined) return undefined;
+    const n = Number(value);
+    return isNaN(n) ? undefined : n;
+  })
+  @IsInt()
+  @Min(1)
+  categoryId?: number;
 
   // ── Rich-text tab sections ──────────────────────────────────────────────
 

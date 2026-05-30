@@ -70,9 +70,14 @@ const ManageCenters = () => {
   const handleGalleryUpload = (e) => {
     const images = Array.from(e.target.files).map((file) => ({
       file,
+      // Store the File object reference — the blob URL is only used for preview
+      // inside this render cycle. When we submit we read from .file, so even if
+      // the blob URL were revoked the upload still works.
       url: URL.createObjectURL(file),
     }));
-    setForm({ ...form, gallery: [...form.gallery, ...images] });
+    setForm((prev) => ({ ...prev, gallery: [...prev.gallery, ...images] }));
+    // Reset the input so the same file can be re-selected if needed
+    e.target.value = "";
   };
 
   const removeGalleryImage = (index) => {
@@ -129,13 +134,16 @@ const ManageCenters = () => {
     form.gallery.forEach((img) => {
       if (img.file) {
         formData.append("gallery", img.file);
-      } else if (img.url) {
-        try {
-          const relativePath = new URL(img.url).pathname; // "/uploads/filename.jpg"
-          formData.append("existingGallery", relativePath);
-        } catch {
-          formData.append("existingGallery", img.url);
-        }
+      } else {
+        // Existing server image — prefer the stored serverPath, fall back to parsing the URL
+        const path = img.serverPath || (() => {
+          try {
+            return new URL(img.url).pathname;
+          } catch {
+            return img.url;
+          }
+        })();
+        formData.append("existingGallery", path);
       }
     });
 
@@ -181,9 +189,10 @@ const ManageCenters = () => {
       image: center.centerImage
         ? { url: `${API_BASE}${center.centerImage}` }
         : null,
+      // Existing server images: url is full URL, no .file → backend keeps them via existingGallery
       gallery: (center.gallery || []).map((img) => ({
         url: `${API_BASE}${img}`,
-        // No .file → marks these as existing server images
+        serverPath: img, // keep original server-relative path for existingGallery submission
       })),
       description: Array.isArray(center.description)
         ? center.description.join("\n")
