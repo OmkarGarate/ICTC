@@ -9,7 +9,7 @@ import ManageBlogs from "./pages/ManageBlogs";
 import ManageCancers from "./pages/ManageCancers";
 import ManageServices from "./pages/ManageServices";
 import ManageServiceCategories from "./pages/ManageServiceCategories";
-import ManageCancerCategories from "./pages/Managecancercategories";
+import ManageCancerCategories from "./pages/ManageCancerCategories";
 import ManageTestimonials from "./pages/ManageTestimonials";
 import ManageAppointments from "./pages/ManageAppointments";
 
